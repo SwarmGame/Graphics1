@@ -1,6 +1,9 @@
 package commonlib.network;
 
 import com.esotericsoftware.kryo.Kryo;
+import commonlib.gameObjects.Particle;
+import commonlib.gameObjects.Queen;
+import commonlib.gameObjects.Swarm;
 //import commonlib.GameObjects.Circle;
 
 /**
@@ -22,6 +25,9 @@ public class GameServerClientInitialization {
        kryo.register(GameServerRequestMove.class);
        kryo.register(GameServerRequestAuth.class);
        kryo.register(GameServerResponseGameOver.class);
+       kryo.register(Swarm.class);
+       kryo.register(Queen.class);
+       kryo.register(Particle.class);
        return true;
     }
 }

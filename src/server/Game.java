@@ -1,5 +1,8 @@
 package server;
 
+import commonlib.gameObjects.Particle;
+import commonlib.gameObjects.Queen;
+import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerResponseGameOver;
 import server.network.GameServer;
 
@@ -14,13 +17,20 @@ public class Game {
     GameServer gameServer;
     MovementController movementController;
 
-    Player players[];
+    Player player1;
+    Player player2;
+    Swarm swarm;
 //  Map
 //  EventQueue
 //
     public MovementController getMovementController()
     {
         return movementController;
+    }
+
+    public Swarm getSwarm()
+    {
+        return swarm;
     }
 
     void start()
@@ -34,6 +44,14 @@ public class Game {
         }
 
         movementController = new MovementController(this);
+        player1 = new Player("alex","1");
+        player2 = new Player("derek", "2");
+
+        swarm = new Swarm(new Queen(300, 300));
+        swarm.addParticle(new Particle(300, 200));
+        swarm.addParticle(new Particle(200, 300));
+
+
 
 //        AppGameContainer app = new AppGameContainer( new SimpleServer() );
 //        app.setDisplayMode(800, 600, false);
@@ -52,7 +70,10 @@ public class Game {
                     // Calculate game situation
                     // Calculate
                     // Send game situation to everyone
-                    gameServer.sendToAll("Hello");
+                    gameServer.sendToAll(player1.getSwarm());
+                    //swarm.move();
+                    //gameServer.send(player1, "test");
+                    //gameServer.send(player2, "test2");
                    // timeout = 0;
                 }
 

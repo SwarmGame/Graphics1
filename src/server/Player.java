@@ -1,5 +1,7 @@
 package server;
 
+import commonlib.gameObjects.Swarm;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ALEXANDER
@@ -10,14 +12,20 @@ package server;
 public class Player {
     String name;
     String password;
+    Swarm swarm;
     int score;
     int destX;
     int destY;
 
     public void setDest(int x, int y)
     {
-        destX = x;
-        destY = y;
+        destX = destX + x;
+        destY = destY + y;
+    }
+
+    public Swarm getSwarm()
+    {
+        return swarm;
     }
 
     void init(String name, String password)

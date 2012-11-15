@@ -42,11 +42,13 @@ public class Game extends BasicGame
 
         try
         {
-            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
+            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("C:\\temp\\Graphics1\\src\\resources\\textures\\dirt.jpg"));
+           // C:\temp\Graphics1\src\resources\textures\dirt.jpg
         }
         catch(IOException e)
         {
             System.out.println("Background texture not found");
+            System.out.println(e);
             System.exit(1);
         }
 
