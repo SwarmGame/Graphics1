@@ -11,7 +11,7 @@ public abstract class game_objects{
 		D2vector     vel;
         double      max_radius;
 		boolean      is_controlable;
-		//public enum object_type{Raw,Queen, Nutrition, Particle};
+		//public enum object_type{Raw,commonlib.gameObjects.Queen, Nutrition, commonlib.gameObjects.Particle};
 		//object_type objtype;
 		double dt; 
 		int move() // problematic : how to handle collision?
@@ -55,7 +55,7 @@ class queen extends game_objects{
         vel = new D2vector(0,0);
         shape = new Shape();
         System.out.println("queen constructed");
-        //objtype = object_type.Queen;
+        //objtype = object_type.commonlib.gameObjects.Queen;
     }
 boolean regenerate()
 {

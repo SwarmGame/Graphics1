@@ -11,14 +11,13 @@ import com.esotericsoftware.kryonet.Listener;
  * To change this template use File | Settings | File Templates.
  */
 public class GameClientListener extends Listener
+{
+    GameClient client;
 
+    public GameClientListener(GameClient client)
     {
-        GameClient client;
-
-        public GameClientListener(GameClient client)
-        {
-            this.client = client;
-        }
+        this.client = client;
+    }
 
     /**
      * Called when the remote end is no longer connected. There is no guarantee as to what thread will invoke this method.

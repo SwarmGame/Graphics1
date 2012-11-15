@@ -1,3 +1,5 @@
+package commonlib.gameObjects;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Derek

@@ -1,3 +1,5 @@
+package commonlib.gameObjects;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +38,43 @@ public class Swarm
 
             double queenX = queen.getX();
             double queenY = queen.getY();
-            double x = queenX - particle.getX();
-            double y = queenY - particle.getY();
+            double accelerateX = queenX - particle.getX();
+            double accelerateY = queenY - particle.getY();
             double velocityX = particle.getVelocityX();
             double velocityY = particle.getVelocityY();
 
-            double distance = Math.sqrt(x*x + y*y);
-            x = x/2*distance;
-            y = y/2*distance;
+            double distance = Math.sqrt(accelerateX*accelerateX + accelerateY*accelerateY);
 
-            velocityX += x;
-            velocityY += y;
+            //normalize and scale down acceleration
+            accelerateX = accelerateX/(5*distance);
+            accelerateY = accelerateY/(5*distance);
 
-            velocityX = velocityX*distance/(30*Math.sqrt(velocityX*velocityX + velocityY*velocityY));
-            velocityY = velocityY*distance/(30*Math.sqrt(velocityX*velocityX + velocityY*velocityY));
+//            if(accelerateX >= 5)
+//            {
+//                accelerateX = 5;
+//            }
+//
+//            if(accelerateY >= 5)
+//            {
+//                accelerateY = 5;
+//            }
+
+//            if(distance <= 20)
+//            {
+//                accelerateX *= -1;
+//                accelerateY *= -1;
+//            }
+
+            velocityX += accelerateX;
+            velocityY += accelerateY;
+
+            double totalVelocity = Math.sqrt(velocityX*velocityX + velocityY*velocityY);
+            if(totalVelocity > 3)
+            {
+                velocityX = velocityX*3/totalVelocity;
+                velocityY = velocityY*3/totalVelocity;
+            }
+
 
             particle.setVelocityX(velocityX);
             particle.setVelocityY(velocityY);

@@ -1,6 +1,10 @@
+package client;
+
+import commonlib.gameObjects.Particle;
+import commonlib.gameObjects.Queen;
+import commonlib.gameObjects.Swarm;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -24,7 +28,7 @@ public class Game extends BasicGame
 
     public Game()
     {
-        super("Game");
+        super("client.Game");
     }
 
     @Override
@@ -67,7 +71,7 @@ public class Game extends BasicGame
         Input input = gc.getInput();
         int x = 0;
         int y = 0;
-        //Queen queen = swarm.getQueen();
+        //commonlib.gameObjects.Queen queen = swarm.getQueen();
 
         if(input.isKeyDown(Input.KEY_A))
         {
