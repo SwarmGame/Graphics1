@@ -14,6 +14,7 @@ public class Swarm
 {
     private Queen queen;
     private List<Particle> particles;
+    private int MAX_SPEED = 3;
 
     public Swarm(Queen queen)
     {
@@ -45,35 +46,27 @@ public class Swarm
 
             double distance = Math.sqrt(accelerateX*accelerateX + accelerateY*accelerateY);
 
+
             //normalize and scale down acceleration
             accelerateX = accelerateX/(5*distance);
             accelerateY = accelerateY/(5*distance);
 
-//            if(accelerateX >= 5)
-//            {
-//                accelerateX = 5;
-//            }
-//
-//            if(accelerateY >= 5)
-//            {
-//                accelerateY = 5;
-//            }
+            //add random acceleration
+            accelerateX += Math.random()-.5;
+            accelerateY += Math.random()-.5;
 
-//            if(distance <= 20)
-//            {
-//                accelerateX *= -1;
-//                accelerateY *= -1;
-//            }
 
             velocityX += accelerateX;
             velocityY += accelerateY;
 
+            //cap the total speed of the particles
             double totalVelocity = Math.sqrt(velocityX*velocityX + velocityY*velocityY);
-            if(totalVelocity > 3)
+            if(totalVelocity > MAX_SPEED)
             {
-                velocityX = velocityX*3/totalVelocity;
-                velocityY = velocityY*3/totalVelocity;
+                velocityX = velocityX* MAX_SPEED /totalVelocity;
+                velocityY = velocityY* MAX_SPEED /totalVelocity;
             }
+
 
 
             particle.setVelocityX(velocityX);

@@ -1,8 +1,11 @@
 package client;
 
+import client.network.GameClient;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
+import commonlib.network.GameServerRequest;
+import commonlib.network.GameServerRequestAuth;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.opengl.Texture;
@@ -24,6 +27,7 @@ public class Game extends BasicGame
     private static final int MAXFPS = 60;
     private Texture backgroundTexture;
     private Image backgroundImage;
+    private GameClient client;
     //private Rectangle backgroundRectangle;
 
     public Game()
@@ -34,8 +38,18 @@ public class Game extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException
     {
+        client = new GameClient("localhost", 8000);
+        client.send(new GameServerRequestAuth("alex", "1"));
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
         swarm.addParticle(new Particle(200, 300));
 
         //backgroundRectangle = new Rectangle(250,250,250,250);
