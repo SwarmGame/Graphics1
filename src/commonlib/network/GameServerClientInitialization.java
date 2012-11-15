@@ -1,7 +1,7 @@
 package commonlib.network;
 
 import com.esotericsoftware.kryo.Kryo;
-import commonlib.GameObjects.Circle;
+//import commonlib.GameObjects.Circle;
 
 /**
  * Register classes that are going to be sent over the network.
@@ -17,7 +17,7 @@ import commonlib.GameObjects.Circle;
 public class GameServerClientInitialization {
     public static boolean initialize(Kryo kryo)
     {
-       kryo.register(Circle.class);
+       //kryo.register(Circle.class);
        kryo.register(GameServerRequest.class);
        kryo.register(GameServerRequestMove.class);
        kryo.register(GameServerRequestAuth.class);

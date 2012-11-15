@@ -7,32 +7,53 @@
  */
 public class Particle
 {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
+    private double velocityX;
+    private double velocityY;
 
-    public Particle(int x, int y)
+
+    public Particle(double x, double y)
     {
         this.x = x;
         this.y = y;
+        velocityX = 1;
+        velocityY = 0;
     }
 
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
-    public void setX(int x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public int getY()
+    public double getY()
     {
         return y;
     }
 
-    public void setY(int y)
+    public void setY(double y)
     {
         this.y = y;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
     }
 }
