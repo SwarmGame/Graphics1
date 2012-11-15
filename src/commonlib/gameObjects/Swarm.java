@@ -16,6 +16,9 @@ public class Swarm
     private List<Particle> particles;
     private int MAX_SPEED = 3;
 
+    // Default constructor is required by Cryonet library
+    public Swarm(){}
+
     public Swarm(Queen queen)
     {
         this.queen = queen;

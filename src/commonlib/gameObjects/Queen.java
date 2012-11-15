@@ -12,6 +12,8 @@ public class Queen
     private int x;
     private int y;
 
+    // Default constructor is required by Cryonet library
+    public Queen(){}
 
     public Queen(int x, int y)
     {

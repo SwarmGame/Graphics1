@@ -47,9 +47,6 @@ public class Game {
         player1 = new Player("alex","1");
         player2 = new Player("derek", "2");
 
-        swarm = new Swarm(new Queen(300, 300));
-        swarm.addParticle(new Particle(300, 200));
-        swarm.addParticle(new Particle(200, 300));
 
 
 
@@ -100,7 +97,12 @@ public class Game {
 
     public Player verifyPlayer(String name, String password)
     {
-        return null;
+        if (this.player1.getName().equals(name) && this.player1.getPassword().equals(password))
+            return this.player1;
+        else if (this.player2.getName().equals(name) && this.player2.getPassword().equals(password))
+            return this.player2;
+        else
+            return null;
     }
 
     public void moveCommandReceived(Player player, int x, int y)

@@ -1,5 +1,7 @@
 package server;
 
+import commonlib.gameObjects.Particle;
+import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
 
 /**
@@ -21,6 +23,8 @@ public class Player {
     {
         destX = destX + x;
         destY = destY + y;
+
+        swarm.move(x,y);
     }
 
     public Swarm getSwarm()
@@ -32,6 +36,11 @@ public class Player {
     {
         this.name = name;
         this.password = password;
+        swarm = new Swarm(new Queen(300, 300));
+        swarm.addParticle(new Particle(300, 200));
+        swarm.addParticle(new Particle(200, 300));
+
+
         score = 0;
     }
 
@@ -49,6 +58,11 @@ public class Player {
     public String getName()
     {
         return name;
+    }
+
+    public String getPassword()
+    {
+        return password;
     }
 
     void addScore(int inc)

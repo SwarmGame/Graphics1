@@ -39,6 +39,13 @@ public class Game extends BasicGame
     public void init(GameContainer gc) throws SlickException
     {
         client = new GameClient("localhost", 8000);
+        try {
+            client.connect();
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
         client.send(new GameServerRequestAuth("alex", "1"));
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
@@ -110,6 +117,7 @@ public class Game extends BasicGame
         }
 
         swarm.move(x,y);
+        client.sendMoveCommand(x,y);
     }
 
     public static void main(String []args) throws SlickException

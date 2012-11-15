@@ -28,6 +28,7 @@ public class GameServerClientInitialization {
        kryo.register(Swarm.class);
        kryo.register(Queen.class);
        kryo.register(Particle.class);
+       kryo.register(java.util.ArrayList.class);
        return true;
     }
 }
