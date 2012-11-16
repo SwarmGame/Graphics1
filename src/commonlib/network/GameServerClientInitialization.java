@@ -1,6 +1,7 @@
 package commonlib.network;
 
 import com.esotericsoftware.kryo.Kryo;
+import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
@@ -29,6 +30,7 @@ public class GameServerClientInitialization {
        kryo.register(Queen.class);
        kryo.register(Particle.class);
        kryo.register(java.util.ArrayList.class);
+       kryo.register(GameSituationSerialized.class);
        return true;
     }
 }

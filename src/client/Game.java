@@ -27,7 +27,7 @@ public class Game extends BasicGame
     private static String username;
     private static String password;
     private Swarm swarm;
-    private Swarm swarm1;
+    private GameSituationSerialized gameSituationSerialized;
     private GameSituationSerialized gameSituation;
 
     private static final int MAXFPS = 30;
@@ -57,10 +57,6 @@ public class Game extends BasicGame
         swarm.addParticle(new Particle(300, 200));
         swarm.addParticle(new Particle(200, 300));
 
-        swarm1 = new Swarm(new Queen(300, 300));
-        swarm1.addParticle(new Particle(300, 200));
-
-
         try
         {
             backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
@@ -80,18 +76,18 @@ public class Game extends BasicGame
          this.swarm = swarm;
     }
 
+    public void newGameSituation(GameSituationSerialized situationSerialized)
+    {
+        this.gameSituationSerialized = situationSerialized;
+    }
+
+
     // This method is called every time the game window is redrawn
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
         backgroundImage.draw(0,0,1000,1000);
         g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
         for(Particle particle : swarm.getParticles())
-        {
-            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
-        }
-
-        g.draw(new Circle(swarm1.getQueen().getX(), swarm1.getQueen().getY(), 10));
-        for(Particle particle : swarm1.getParticles())
         {
             g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
         }

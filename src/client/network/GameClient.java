@@ -4,6 +4,7 @@ import client.Game;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerClientInitialization;
 import commonlib.network.GameServerRequestMove;
@@ -98,6 +99,12 @@ public class GameClient {
             System.out.println(y);
             //System.out.printf("%d %d\n",x,swarm.getQueen().getY());
             game.newGameSituation(swarm);
+        }
+
+        if (object.getClass() == GameSituationSerialized.class)
+        {
+            game.newGameSituation((GameSituationSerialized)object);
+
         }
 
         if (object.getClass() == GameServerResponseGameOver.class)

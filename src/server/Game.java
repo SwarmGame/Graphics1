@@ -63,7 +63,7 @@ public class Game {
                 timeout++;
                 Thread.sleep(1000/30);
                 player1.swarm.move();
-
+                player2.swarm.move();
                 //if ((timeout % 100) == 0) {
                     //System.out.println("Sending hello message");
                     // Calculate game situation
