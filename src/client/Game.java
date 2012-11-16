@@ -28,7 +28,7 @@ public class Game extends BasicGame
     private Swarm swarm1;
     private GameSituationSerialized gameSituation;
 
-    private static final int MAXFPS = 60;
+    private static final int MAXFPS = 30;
     private Texture backgroundTexture;
     private Image backgroundImage;
     private GameClient client;
@@ -54,8 +54,6 @@ public class Game extends BasicGame
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
         swarm.addParticle(new Particle(200, 300));
-
-        //backgroundRectangle = new Rectangle(250,250,250,250);
 
         swarm1 = new Swarm(new Queen(300, 300));
         swarm1.addParticle(new Particle(300, 200));
@@ -126,7 +124,8 @@ public class Game extends BasicGame
             y += 2;
         }
 
-        //swarm.move(x,y);
+//        swarm.getQueen().setDest(x,y);
+//        swarm.move();
         client.sendMoveCommand(x,y);
     }
 

@@ -25,10 +25,11 @@ public class Swarm
         particles = new ArrayList<Particle>();
     }
 
-    public void move(int x, int y)
+    public void move()
     {
-        queen.setX(queen.getX() + x);
-        queen.setY(queen.getY() + y);
+        queen.move();
+//        queen.setX(queen.getX() + x);
+//        queen.setY(queen.getY() + y);
 
         moveParticles();
     }

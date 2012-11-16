@@ -59,10 +59,10 @@ public class Game {
         {
             try {
                 timeout++;
-                Thread.sleep(1);
-                player1.swarm.getQueen().move();
+                Thread.sleep(1000/30);
+                player1.swarm.move();
 
-                if ((timeout % 100) == 0) {
+                //if ((timeout % 100) == 0) {
                     //System.out.println("Sending hello message");
                     // Calculate game situation
                     // Calculate
@@ -73,7 +73,7 @@ public class Game {
                     //gameServer.send(player1, "test");
                     //gameServer.send(player2, "test2");
                    // timeout = 0;
-                }
+                //}
 
                 if (timeout == 10000)
                 {

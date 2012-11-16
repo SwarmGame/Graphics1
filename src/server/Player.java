@@ -21,10 +21,11 @@ public class Player {
 
     public void setDest(int x, int y)
     {
-        destX = destX + x;
-        destY = destY + y;
+//        destX = destX + x;
+//        destY = destY + y;
+        swarm.getQueen().setDest(x,y);
 
-        swarm.move(x,y);
+//        swarm.move(x,y);
     }
 
     public Swarm getSwarm()

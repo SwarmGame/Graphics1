@@ -127,13 +127,13 @@ public class GameServer {
         }
 
         // Now figure out what to do
-        if (object.getClass() == GameServerRequestAuth.class)
-        {
-           // Client connected or reconnected
-           GameServerRequestAuth request = (GameServerRequestAuth) object;
-           player = game.createNewPlayer(request.getName());
-           players.put(connection, player);
-        }
+//        if (object.getClass() == GameServerRequestAuth.class)
+//        {
+//           // Client connected or reconnected
+//           GameServerRequestAuth request = (GameServerRequestAuth) object;
+//           player = game.createNewPlayer(request.getName());
+//           players.put(connection, player);
+//        }
 
         if (object.getClass() == GameServerRequestMove.class)
         {
