@@ -76,7 +76,7 @@ public class Game {
 
                     gameServer.sendToAll(gameSituation);
 
-                    gameServer.sendToAll(player1.getSwarm());
+                    //gameServer.sendToAll(player1.getSwarm());
 
                     //swarm.move();
                     //gameServer.send(player1, "test");

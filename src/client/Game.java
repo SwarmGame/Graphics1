@@ -95,15 +95,16 @@ public class Game extends BasicGame
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
         backgroundImage.draw(0,0,1000,1000);
-        g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
-        for(Particle particle : swarm.getParticles())
-        {
-            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
-        }
+//        g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
+//        for(Particle particle : swarm.getParticles())
+//        {
+//            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
+//        }
 
         if (gameSituationSerialized != null)
         {
-              drawSwarm(gameSituationSerialized.swarm2, gc,g);
+            drawSwarm(gameSituationSerialized.swarm1, gc,g);
+            drawSwarm(gameSituationSerialized.swarm2, gc,g);
         }
 
     }
