@@ -1,3 +1,5 @@
+package commonlib.gameObjects;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Derek
@@ -12,6 +14,9 @@ public class Particle
     private double velocityX;
     private double velocityY;
 
+    // Default constructor is required by Cryonet library
+    public Particle ()
+    {}
 
     public Particle(double x, double y)
     {

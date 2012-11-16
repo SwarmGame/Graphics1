@@ -1,3 +1,5 @@
+package commonlib.gameObjects;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,10 @@ public class Swarm
 {
     private Queen queen;
     private List<Particle> particles;
+    private int MAX_SPEED = 3;
+
+    // Default constructor is required by Cryonet library
+    public Swarm(){}
 
     public Swarm(Queen queen)
     {
@@ -27,6 +33,11 @@ public class Swarm
         moveParticles();
     }
 
+    public void setDest(int dx, int dy)
+    {
+        queen.setDest(dx,dy);
+    }
+
     private void moveParticles()
     {
         for(Particle particle : particles)
@@ -36,20 +47,35 @@ public class Swarm
 
             double queenX = queen.getX();
             double queenY = queen.getY();
-            double x = queenX - particle.getX();
-            double y = queenY - particle.getY();
+            double accelerateX = queenX - particle.getX();
+            double accelerateY = queenY - particle.getY();
             double velocityX = particle.getVelocityX();
             double velocityY = particle.getVelocityY();
 
-            double distance = Math.sqrt(x*x + y*y);
-            x = x/2*distance;
-            y = y/2*distance;
+            double distance = Math.sqrt(accelerateX*accelerateX + accelerateY*accelerateY);
 
-            velocityX += x;
-            velocityY += y;
 
-            velocityX = velocityX*distance/(30*Math.sqrt(velocityX*velocityX + velocityY*velocityY));
-            velocityY = velocityY*distance/(30*Math.sqrt(velocityX*velocityX + velocityY*velocityY));
+            //normalize and scale down acceleration
+            accelerateX = accelerateX/(5*distance);
+            accelerateY = accelerateY/(5*distance);
+
+            //add random acceleration
+            accelerateX += Math.random()-.5;
+            accelerateY += Math.random()-.5;
+
+
+            velocityX += accelerateX;
+            velocityY += accelerateY;
+
+            //cap the total speed of the particles
+            double totalVelocity = Math.sqrt(velocityX*velocityX + velocityY*velocityY);
+            if(totalVelocity > MAX_SPEED)
+            {
+                velocityX = velocityX* MAX_SPEED /totalVelocity;
+                velocityY = velocityY* MAX_SPEED /totalVelocity;
+            }
+
+
 
             particle.setVelocityX(velocityX);
             particle.setVelocityY(velocityY);

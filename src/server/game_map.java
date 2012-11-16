@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class game_map {
 
-//enum typeofobject{Empty, Queen, Nutrition, Particle,Taken, Bornloc,Dummy};
+//enum typeofobject{Empty, commonlib.gameObjects.Queen, Nutrition, commonlib.gameObjects.Particle,Taken, Bornloc,Dummy};
 //boolean has_bornloc_flag;
 //typeofobject[][]  gamemap;
 

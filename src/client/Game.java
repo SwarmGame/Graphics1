@@ -1,6 +1,14 @@
+package client;
+
+import client.network.GameClient;
+import commonlib.GameSituationSerialized;
+import commonlib.gameObjects.Particle;
+import commonlib.gameObjects.Queen;
+import commonlib.gameObjects.Swarm;
+import commonlib.network.GameServerRequest;
+import commonlib.network.GameServerRequestAuth;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -17,36 +25,68 @@ import java.io.IOException;
 public class Game extends BasicGame
 {
     private Swarm swarm;
+    private Swarm swarm1;
+    private GameSituationSerialized gameSituation;
+
     private static final int MAXFPS = 60;
     private Texture backgroundTexture;
     private Image backgroundImage;
+    private GameClient client;
     //private Rectangle backgroundRectangle;
 
     public Game()
     {
-        super("Game");
+        super("client.Game");
     }
 
     @Override
     public void init(GameContainer gc) throws SlickException
     {
+        client = new GameClient(this, "localhost", 8000);
+        try {
+            client.connect();
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
+        client.send(new GameServerRequestAuth("alex", "1"));
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
+        swarm.addParticle(new Particle(200, 300));
         swarm.addParticle(new Particle(200, 300));
 
         //backgroundRectangle = new Rectangle(250,250,250,250);
 
+        swarm1 = new Swarm(new Queen(300, 300));
+        swarm1.addParticle(new Particle(300, 200));
+
+
         try
         {
-            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
+            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("C:\\temp\\Graphics1\\src\\resources\\textures\\dirt.jpg"));
+           // C:\temp\Graphics1\src\resources\textures\dirt.jpg
         }
         catch(IOException e)
         {
             System.out.println("Background texture not found");
+            System.out.println(e);
             System.exit(1);
         }
 
         backgroundImage = new Image(backgroundTexture);
+    }
+
+    public void newGameSituation(Swarm swarm)
+    {
+         this.swarm = swarm;
     }
 
     // This method is called every time the game window is redrawn
@@ -55,6 +95,12 @@ public class Game extends BasicGame
         backgroundImage.draw(0,0,1000,1000);
         g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
         for(Particle particle : swarm.getParticles())
+        {
+            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
+        }
+
+        g.draw(new Circle(swarm1.getQueen().getX(), swarm1.getQueen().getY(), 10));
+        for(Particle particle : swarm1.getParticles())
         {
             g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
         }
@@ -67,7 +113,7 @@ public class Game extends BasicGame
         Input input = gc.getInput();
         int x = 0;
         int y = 0;
-        //Queen queen = swarm.getQueen();
+        //commonlib.gameObjects.Queen queen = swarm.getQueen();
 
         if(input.isKeyDown(Input.KEY_A))
         {
@@ -89,7 +135,8 @@ public class Game extends BasicGame
             y += 2;
         }
 
-        swarm.move(x,y);
+        //swarm.move(x,y);
+        client.sendMoveCommand(x,y);
     }
 
     public static void main(String []args) throws SlickException

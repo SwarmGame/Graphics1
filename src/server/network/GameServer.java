@@ -89,7 +89,7 @@ public class GameServer {
             GameServerRequestAuth request = (GameServerRequestAuth) object;
 
             // login and password verification is actually done by createNewPlayer function
-            player = game.createNewPlayer(request.getName());
+            //player = game.createNewPlayer(request.getName());
 
             player = game.verifyPlayer(request.getName(), request.getPassword());
 
@@ -174,12 +174,18 @@ public class GameServer {
     public void sendToAll (Object object)
     {
        /* Typically used to send updated game situation to all clients */
+       if (object == null)
+           return; // Can't send null pointer over network
+
        Set set = players.keySet();
        Iterator itr = set.iterator();
        while (itr.hasNext())
        {
            Connection connection = (Connection)itr.next();
-           connection.sendTCP(object);
+           if (connection != null)
+                connection.sendTCP(object);
+           else if (debug > 1)
+               System.out.println("sendToAll: null pointer in hash table");
        }
     }
 }
