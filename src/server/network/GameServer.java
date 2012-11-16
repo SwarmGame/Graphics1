@@ -100,7 +100,8 @@ public class GameServer {
                 {
                     System.out.printf("Client authenticated: %s", player.getName());
                 }
-            }  else
+            }
+            else
             {
                 if (debug > 0)
                 {
@@ -138,7 +139,7 @@ public class GameServer {
         {
             // Move command - forward to movement controller
             GameServerRequestMove command = (GameServerRequestMove) object;
-            game.getMovementController().process(player, command);
+            game.getNetworkController().process(player, command);
         }
 
 

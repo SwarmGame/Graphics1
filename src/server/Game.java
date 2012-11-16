@@ -1,7 +1,5 @@
 package server;
 
-import commonlib.gameObjects.Particle;
-import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerResponseGameOver;
 import server.network.GameServer;
@@ -15,7 +13,7 @@ public class Game {
     public int debug;
 
     GameServer gameServer;
-    MovementController movementController;
+    NetworkController networkController;
 
     Player player1;
     Player player2;
@@ -23,9 +21,9 @@ public class Game {
 //  Map
 //  EventQueue
 //
-    public MovementController getMovementController()
+    public NetworkController getNetworkController()
     {
-        return movementController;
+        return networkController;
     }
 
     public Swarm getSwarm()
@@ -38,12 +36,12 @@ public class Game {
         System.out.println("Starting game server");
         try {
             gameServer = new GameServer(this);
-            gameServer.debug = 1;
+            gameServer.debug = 2;
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        movementController = new MovementController(this);
+        networkController = new NetworkController(this);
         player1 = new Player("alex","1");
         player2 = new Player("derek", "2");
 
@@ -64,7 +62,7 @@ public class Game {
                 Thread.sleep(1);
                 player1.swarm.getQueen().move();
 
-                if ((timeout % 50) == 0) {
+                if ((timeout % 100) == 0) {
                     //System.out.println("Sending hello message");
                     // Calculate game situation
                     // Calculate

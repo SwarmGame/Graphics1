@@ -9,12 +9,12 @@ import commonlib.network.GameServerRequestMove;
  * Time: 3:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MovementController {
+public class NetworkController {
     Game game;
     public int debug;
 
 
-    public MovementController(Game game)
+    public NetworkController(Game game)
     {
         this.game = game;
         this.debug = game.debug;

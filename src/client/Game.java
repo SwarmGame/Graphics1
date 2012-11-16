@@ -54,14 +54,6 @@ public class Game extends BasicGame
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
         swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
-        swarm.addParticle(new Particle(200, 300));
 
         //backgroundRectangle = new Rectangle(250,250,250,250);
 
@@ -71,8 +63,7 @@ public class Game extends BasicGame
 
         try
         {
-            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("C:\\temp\\Graphics1\\src\\resources\\textures\\dirt.jpg"));
-           // C:\temp\Graphics1\src\resources\textures\dirt.jpg
+            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
         }
         catch(IOException e)
         {
