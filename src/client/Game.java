@@ -24,6 +24,8 @@ import java.io.IOException;
  */
 public class Game extends BasicGame
 {
+    private static String username;
+    private static String password;
     private Swarm swarm;
     private Swarm swarm1;
     private GameSituationSerialized gameSituation;
@@ -50,7 +52,7 @@ public class Game extends BasicGame
             e.printStackTrace();
         }
 
-        client.send(new GameServerRequestAuth("alex", "1"));
+        client.send(new GameServerRequestAuth(username, password));
         swarm = new Swarm(new Queen(300, 300));
         swarm.addParticle(new Particle(300, 200));
         swarm.addParticle(new Particle(200, 300));
@@ -131,6 +133,14 @@ public class Game extends BasicGame
 
     public static void main(String []args) throws SlickException
     {
+        if(args.length < 2)
+        {
+            System.out.println("You must provide a username and password");
+            System.exit(1);
+        }
+        username = args[0];
+        password = args[1];
+        System.out.println(username + " " + password);
         AppGameContainer app = new AppGameContainer(new Game());
         app.setTargetFrameRate(MAXFPS);
         app.setDisplayMode(500, 500, false);
