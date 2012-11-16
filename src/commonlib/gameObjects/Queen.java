@@ -11,6 +11,8 @@ public class Queen
 {
     private int x;
     private int y;
+    private int dx;
+    private int dy;
 
     // Default constructor is required by Cryonet library
     public Queen(){}
@@ -39,5 +41,19 @@ public class Queen
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    public void setDest(int dx, int dy)
+    {
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public void move()
+    {
+        x += dx;
+        y += dy;
+        dx = 0;
+        dy = 0;
     }
 }

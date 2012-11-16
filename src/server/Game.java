@@ -62,12 +62,15 @@ public class Game {
             try {
                 timeout++;
                 Thread.sleep(1);
-                if ((timeout % 1000) == 0) {
+                player1.swarm.getQueen().move();
+
+                if ((timeout % 50) == 0) {
                     //System.out.println("Sending hello message");
                     // Calculate game situation
                     // Calculate
                     // Send game situation to everyone
                     gameServer.sendToAll(player1.getSwarm());
+
                     //swarm.move();
                     //gameServer.send(player1, "test");
                     //gameServer.send(player2, "test2");

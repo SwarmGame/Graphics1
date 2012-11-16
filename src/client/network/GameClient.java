@@ -1,8 +1,10 @@
 package client.network;
 
+import client.Game;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerClientInitialization;
 import commonlib.network.GameServerRequestMove;
 import commonlib.network.GameServerResponseGameOver;
@@ -22,8 +24,9 @@ public class GameClient {
     String hostname;
     int port;
     boolean isConnected;
+    Game game;
 
-    public GameClient(String hostname, int port)
+    public GameClient(Game game, String hostname, int port)
     {
         client = new Client();
         Kryo kryo = client.getKryo();
@@ -34,6 +37,7 @@ public class GameClient {
         this.hostname = hostname;
         this.port = port;
         this.isConnected = false;
+        this.game = game;
         client.addListener(new GameClientListener(this));
 
     }
@@ -58,8 +62,8 @@ public class GameClient {
 
     public boolean send(Object object)
     {
-       System.out.println("Sending object");
-       System.out.println(object);
+       //System.out.println("Sending object");
+       //System.out.println(object);
        client.sendTCP(object);
        return true;
     }
@@ -82,7 +86,20 @@ public class GameClient {
     {
         /* Notification from server received */
         /* It's either new game situation or "end of game" notification */
-        System.out.print(object);
+        //System.out.print(object);
+
+        if (object.getClass() == Swarm.class)
+        {
+            Swarm swarm = (Swarm)object;
+            int x = swarm.getQueen().getX();
+            int y = swarm.getQueen().getY();
+
+            System.out.print(x);
+            System.out.println(y);
+            //System.out.printf("%d %d\n",x,swarm.getQueen().getY());
+            game.newGameSituation(swarm);
+        }
+
         if (object.getClass() == GameServerResponseGameOver.class)
         {
             GameServerResponseGameOver response = (GameServerResponseGameOver)object;

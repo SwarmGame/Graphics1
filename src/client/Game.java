@@ -1,6 +1,7 @@
 package client;
 
 import client.network.GameClient;
+import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
@@ -24,6 +25,9 @@ import java.io.IOException;
 public class Game extends BasicGame
 {
     private Swarm swarm;
+    private Swarm swarm1;
+    private GameSituationSerialized gameSituation;
+
     private static final int MAXFPS = 60;
     private Texture backgroundTexture;
     private Image backgroundImage;
@@ -38,7 +42,7 @@ public class Game extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException
     {
-        client = new GameClient("localhost", 8000);
+        client = new GameClient(this, "localhost", 8000);
         try {
             client.connect();
         } catch (IOException e) {
@@ -61,6 +65,10 @@ public class Game extends BasicGame
 
         //backgroundRectangle = new Rectangle(250,250,250,250);
 
+        swarm1 = new Swarm(new Queen(300, 300));
+        swarm1.addParticle(new Particle(300, 200));
+
+
         try
         {
             backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("C:\\temp\\Graphics1\\src\\resources\\textures\\dirt.jpg"));
@@ -76,12 +84,23 @@ public class Game extends BasicGame
         backgroundImage = new Image(backgroundTexture);
     }
 
+    public void newGameSituation(Swarm swarm)
+    {
+         this.swarm = swarm;
+    }
+
     // This method is called every time the game window is redrawn
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
         backgroundImage.draw(0,0,1000,1000);
         g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
         for(Particle particle : swarm.getParticles())
+        {
+            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
+        }
+
+        g.draw(new Circle(swarm1.getQueen().getX(), swarm1.getQueen().getY(), 10));
+        for(Particle particle : swarm1.getParticles())
         {
             g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
         }
@@ -116,7 +135,7 @@ public class Game extends BasicGame
             y += 2;
         }
 
-        swarm.move(x,y);
+        //swarm.move(x,y);
         client.sendMoveCommand(x,y);
     }
 

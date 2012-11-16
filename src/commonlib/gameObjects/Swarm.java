@@ -33,6 +33,11 @@ public class Swarm
         moveParticles();
     }
 
+    public void setDest(int dx, int dy)
+    {
+        queen.setDest(dx,dy);
+    }
+
     private void moveParticles()
     {
         for(Particle particle : particles)
