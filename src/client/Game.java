@@ -28,7 +28,7 @@ public class Game extends BasicGame
     private static String password;
     private Swarm swarm;
     private GameSituationSerialized gameSituationSerialized;
-    private GameSituationSerialized gameSituation;
+    //private GameSituationSerialized gameSituation;
 
     private static final int MAXFPS = 30;
     private Texture backgroundTexture;
@@ -82,6 +82,15 @@ public class Game extends BasicGame
     }
 
 
+    void drawSwarm(Swarm swarm, GameContainer gc, Graphics g)
+    {
+        g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
+        for(Particle particle : swarm.getParticles())
+        {
+            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
+        }
+
+    }
     // This method is called every time the game window is redrawn
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
@@ -91,6 +100,12 @@ public class Game extends BasicGame
         {
             g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
         }
+
+        if (gameSituationSerialized != null)
+        {
+              drawSwarm(gameSituationSerialized.swarm2, gc,g);
+        }
+
     }
 
     // This method handles events such as mouse movement and key presses
