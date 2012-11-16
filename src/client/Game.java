@@ -2,6 +2,7 @@ package client;
 
 import client.network.GameClient;
 import commonlib.GameSituationSerialized;
+import commonlib.gameObjects.Map;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
@@ -16,25 +17,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * Created with IntelliJ IDEA.
+ * Game
  * User: Derek
  * Date: 11/8/12
  * Time: 9:42 AM
- * To change this template use File | Settings | File Templates.
+ * Sets up and draws the game using the Slick library
  */
 public class Game extends BasicGame
 {
+    private static final int MAXFPS = 30;
+
     private static String username;
     private static String password;
-    private Swarm swarm;
+    private static String hostname;
+    private static String port;
     private GameSituationSerialized gameSituationSerialized;
-    //private GameSituationSerialized gameSituation;
-
-    private static final int MAXFPS = 30;
-    private Texture backgroundTexture;
     private Image backgroundImage;
     private GameClient client;
-    //private Rectangle backgroundRectangle;
 
     public Game()
     {
@@ -44,22 +43,23 @@ public class Game extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException
     {
-        client = new GameClient(this, "localhost", 8000);
-        try {
+        client = new GameClient(this, hostname, Integer.parseInt(port));
+        try
+        {
             client.connect();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.out.println(e);
             e.printStackTrace();
         }
 
         client.send(new GameServerRequestAuth(username, password));
-        swarm = new Swarm(new Queen(300, 300));
-        swarm.addParticle(new Particle(300, 200));
-        swarm.addParticle(new Particle(200, 300));
 
         try
         {
-            backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
+            Texture backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
+            backgroundImage = new Image(backgroundTexture);
         }
         catch(IOException e)
         {
@@ -68,12 +68,6 @@ public class Game extends BasicGame
             System.exit(1);
         }
 
-        backgroundImage = new Image(backgroundTexture);
-    }
-
-    public void newGameSituation(Swarm swarm)
-    {
-         this.swarm = swarm;
     }
 
     public void newGameSituation(GameSituationSerialized situationSerialized)
@@ -82,31 +76,41 @@ public class Game extends BasicGame
     }
 
 
-    void drawSwarm(Swarm swarm, GameContainer gc, Graphics g)
+    void drawSwarm(Swarm swarm, Graphics g)
     {
-        g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
         for(Particle particle : swarm.getParticles())
         {
-            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
+            Circle circle = new Circle((int)particle.getX(), (int)particle.getY(), Particle.RADIUS);
+            g.fill(circle);
         }
 
+        int currentHP = swarm.getQueen().getHitPoints();
+        g.setColor(g.getColor().darker((float)(Queen.MAX_HP - currentHP)/Queen.MAX_HP));
+        g.fill(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), Queen.RADIUS));
     }
     // This method is called every time the game window is redrawn
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
-        backgroundImage.draw(0,0,1000,1000);
-//        g.draw(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), 10));
-//        for(Particle particle : swarm.getParticles())
-//        {
-//            g.draw(new Circle((int)particle.getX(), (int)particle.getY(), 2));
-//        }
+        backgroundImage.draw(0,0, Map.WIDTH, Map.HEIGHT);
 
         if (gameSituationSerialized != null)
         {
-            drawSwarm(gameSituationSerialized.swarm1, gc,g);
-            drawSwarm(gameSituationSerialized.swarm2, gc,g);
+            Swarm swarm1 = gameSituationSerialized.getSwarm1();
+            Swarm swarm2 = gameSituationSerialized.getSwarm2();
+            g.setColor(Color.blue);
+            drawSwarm(swarm1, g);
+            g.drawString(swarm1.getQueen().getHitPoints() + "/20", 50, 470);
+            g.setColor(Color.red);
+            drawSwarm(swarm2, g);
+            g.drawString(swarm2.getQueen().getHitPoints() + "/20", 400, 470);
         }
 
+        g.setColor(Color.black);
+        String winner = gameSituationSerialized.getWinner();
+        if(winner != null)
+        {
+            g.drawString(winner, 165, 235);
+        }
     }
 
     // This method handles events such as mouse movement and key presses
@@ -116,46 +120,46 @@ public class Game extends BasicGame
         Input input = gc.getInput();
         int x = 0;
         int y = 0;
-        //commonlib.gameObjects.Queen queen = swarm.getQueen();
 
-        if(input.isKeyDown(Input.KEY_A))
+        if(input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
         {
-            x -= 2;
+            x -= Queen.SPEED;
         }
 
-        if(input.isKeyDown(Input.KEY_D))
+        if(input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
         {
-            x += 2;
+            x += Queen.SPEED;
         }
 
-        if(input.isKeyDown(Input.KEY_W))
+        if(input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
         {
-            y -= 2;
+            y -= Queen.SPEED;
         }
 
-        if(input.isKeyDown(Input.KEY_S))
+        if(input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
         {
-            y += 2;
+            y += Queen.SPEED;
         }
 
-//        swarm.getQueen().setDest(x,y);
-//        swarm.move();
         client.sendMoveCommand(x,y);
     }
 
+
     public static void main(String []args) throws SlickException
     {
-        if(args.length < 2)
+        if(args.length != 4)
         {
-            System.out.println("You must provide a username and password");
+            System.out.println("You must provide a username, password, hostname, and port");
             System.exit(1);
         }
         username = args[0];
         password = args[1];
-        System.out.println(username + " " + password);
+        hostname = args[2];
+        port = args[3];
         AppGameContainer app = new AppGameContainer(new Game());
         app.setTargetFrameRate(MAXFPS);
-        app.setDisplayMode(500, 500, false);
+        app.setDisplayMode(Map.WIDTH, Map.HEIGHT, false);
+        app.setShowFPS(false);
         app.start();
     }
 }

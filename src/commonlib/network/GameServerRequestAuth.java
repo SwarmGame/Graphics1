@@ -3,10 +3,11 @@ package commonlib.network;
 /**
  * This class implements Requirement "Security requirement"
  */
-public class GameServerRequestAuth extends GameServerRequest {
+public class GameServerRequestAuth extends GameServerRequest
+{
 
-    String name;
-    String password;
+    private String name;
+    private String password;
 
     public GameServerRequestAuth()
     {

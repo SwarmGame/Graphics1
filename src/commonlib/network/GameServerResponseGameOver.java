@@ -7,8 +7,9 @@ package commonlib.network;
  * Time: 3:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public class GameServerResponseGameOver extends  GameServerResponse {
-    String winner;
+public class GameServerResponseGameOver extends GameServerResponse
+{
+    private String winner;
 
     public GameServerResponseGameOver()
     {

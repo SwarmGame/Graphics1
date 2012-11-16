@@ -1,13 +1,13 @@
 package commonlib.network;
 
 /**
- * Created with IntelliJ IDEA.
+ * Game Server Response
  * User: ALEXANDER
  * Date: 11/12/12
  * Time: 3:36 PM
- * To change this template use File | Settings | File Templates.
  */
-public class GameServerResponse {
+public class GameServerResponse
+{
     GameServerResponse()
     {}
 }

@@ -18,10 +18,10 @@ import commonlib.gameObjects.Swarm;
  * the client and server.
  *
  */
-public class GameServerClientInitialization {
+public class GameServerClientInitialization
+{
     public static boolean initialize(Kryo kryo)
     {
-       //kryo.register(Circle.class);
        kryo.register(GameServerRequest.class);
        kryo.register(GameServerRequestMove.class);
        kryo.register(GameServerRequestAuth.class);

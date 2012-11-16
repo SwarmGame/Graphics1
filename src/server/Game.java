@@ -10,99 +10,96 @@ import java.io.IOException;
 /**
  *
  */
-public class Game {
-    public int debug;
+public class Game
+{
+    //30 updates per 1000 millisecond
+    private final int TIME_BETWEEN_UPDATES = 1000/30;
 
-    GameServer gameServer;
-    NetworkController networkController;
+    private GameServer gameServer;
+    private NetworkController networkController;
+    private MovementController movementController;
+    private GameStateController gameStateController;
 
-    Player player1;
-    Player player2;
-   // Swarm swarm;
-//  Map
-//  EventQueue
-//
+    private Player player1;
+    private Player player2;
+    private String player1Name;
+    private String player2Name;
+    private String player1Password;
+    private String player2Password;
+
+    public Game(String player1Name, String player1Password, String player2Name, String player2Password)
+    {
+        this.player1Name = player1Name;
+        this.player1Password = player1Password;
+        this.player2Name = player2Name;
+        this.player2Password = player2Password;
+    }
+
     public NetworkController getNetworkController()
     {
         return networkController;
     }
 
-//    public Swarm getSwarm()
-//    {
-//        return swarm;
-//    }
-
     void start()
     {
         System.out.println("Starting game server");
-        try {
+        try
+        {
             gameServer = new GameServer(this);
-            gameServer.debug = 2;
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
 
+        movementController = new MovementController();
         networkController = new NetworkController(this);
-        player1 = new Player("alex","1");
-        player2 = new Player("derek", "2");
+        gameStateController = new GameStateController();
+        player1 = new Player(player1Name, player1Password, 50, 250);
+        player2 = new Player(player2Name, player2Password, 450, 250);
 
-
-
-
-//        AppGameContainer app = new AppGameContainer( new SimpleServer() );
-//        app.setDisplayMode(800, 600, false);
-//        app.start();
-
-// Normally, we would start a game here
-// But for now we we run a while (1) loop
+        // The game starts here, looping until a player wins
         int timeout = 0;
         while (true)
         {
             GameSituationSerialized gameSituation = new GameSituationSerialized();
-            try {
+            try
+            {
                 timeout++;
-                Thread.sleep(1000/30);
-                player1.swarm.move();
-                player2.swarm.move();
-                //if ((timeout % 100) == 0) {
-                    //System.out.println("Sending hello message");
-                    // Calculate game situation
-                    // Calculate
-                    // Send game situation to everyone
+                Thread.sleep(TIME_BETWEEN_UPDATES);
 
+                movementController.moveSwarm(player1);
+                movementController.moveSwarm(player2);
 
-                    gameSituation.swarm1 = player1.getSwarm();
-                    gameSituation.swarm2 = player2.getSwarm();
+                gameSituation.setSwarm1(player1.getSwarm());
+                gameSituation.setSwarm2(player2.getSwarm());
 
-                    gameServer.sendToAll(gameSituation);
+                String winner = gameStateController.calculateDamage(player1, player2);
+                gameSituation.setWinner(winner);
 
-                    //gameServer.sendToAll(player1.getSwarm());
+                gameServer.sendToAll(gameSituation);
 
-                    //swarm.move();
-                    //gameServer.send(player1, "test");
-                    //gameServer.send(player2, "test2");
-                   // timeout = 0;
-                //}
-
-                if (timeout == 10000)
+                if(winner != null)
                 {
-                    gameServer.sendToAll(new GameServerResponseGameOver("x_x_x"));
+                    gameServer.sendToAll(new GameServerResponseGameOver(winner));
+                    break;
+                }
+
+                //the server times out if it is taking too long to update
+                if(timeout == 10000)
+                {
+                    gameServer.sendToAll(new GameServerResponseGameOver("Disconnect"));
                     timeout = 0;
                 }
 
-
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 // Exception can be generated if signal is received by thread
                 // Just ignore it
                 // e.printStackTrace();
             }
         }
-    }
-
-    public Player createNewPlayer(String name) {
-        //return null;  //To change body of created methods use File | Settings | File Templates.
-
-        return new Player(name);
     }
 
     public Player verifyPlayer(String name, String password)
@@ -113,14 +110,6 @@ public class Game {
             return this.player2;
         else
             return null;
-    }
-
-    public void moveCommandReceived(Player player, int x, int y)
-    {
-       // New destination: x,y for player
-       // player.swarm.destX = x;
-       // player.swarm.destY = y;
-
     }
 
     public void disconnectPlayer(Player player)

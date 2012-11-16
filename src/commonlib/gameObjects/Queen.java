@@ -1,18 +1,20 @@
 package commonlib.gameObjects;
 
 /**
- * Created with IntelliJ IDEA.
+ * Queen
  * User: Derek
  * Date: 11/13/12
  * Time: 3:18 PM
- * To change this template use File | Settings | File Templates.
+ * Stores information about the Queen, which is controlled directly by the player
  */
 public class Queen
 {
+    public static final int RADIUS = 10;
+    public static final int SPEED = 2;
+    public static final int MAX_HP = 20;
     private int x;
     private int y;
-    private int dx;
-    private int dy;
+    private int hitPoints;
 
     // Default constructor is required by Cryonet library
     public Queen(){}
@@ -21,6 +23,7 @@ public class Queen
     {
         this.x = x;
         this.y = y;
+        hitPoints = 20;
     }
 
     public int getX()
@@ -43,17 +46,13 @@ public class Queen
         this.y = y;
     }
 
-    public void setDest(int dx, int dy)
+    public int getHitPoints()
     {
-        this.dx = dx;
-        this.dy = dy;
+        return hitPoints;
     }
 
-    public void move()
+    public void takeDamage(int damage)
     {
-        x += dx;
-        y += dy;
-        dx = 0;
-        dy = 0;
+        hitPoints -= damage;
     }
 }

@@ -4,15 +4,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 /**
- * Created with IntelliJ IDEA.
+ * Game Client Listener
  * User: ALEXANDER
  * Date: 11/10/12
  * Time: 9:05 PM
- * To change this template use File | Settings | File Templates.
+ * Listens for new information from the server
  */
 public class GameClientListener extends Listener
 {
-    GameClient client;
+    private GameClient client;
 
     public GameClientListener(GameClient client)
     {

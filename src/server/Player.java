@@ -11,21 +11,18 @@ import commonlib.gameObjects.Swarm;
  * Time: 7:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Player {
-    String name;
-    String password;
-    Swarm swarm;
-    int score;
-    int destX;
-    int destY;
+public class Player
+{
+    private String name;
+    private String password;
+    private Swarm swarm;
+    private int moveX, moveY;
+    private final int NUM_PARTICLES = 2;
 
-    public void setDest(int x, int y)
+    public void setMoveCommand(int x, int y)
     {
-//        destX = destX + x;
-//        destY = destY + y;
-        swarm.getQueen().setDest(x,y);
-
-//        swarm.move(x,y);
+        moveX = x;
+        moveY = y;
     }
 
     public Swarm getSwarm()
@@ -33,27 +30,21 @@ public class Player {
         return swarm;
     }
 
-    void init(String name, String password)
+    public Player(String name, String password, int startingX, int startingY)
     {
         this.name = name;
         this.password = password;
-        swarm = new Swarm(new Queen(300, 300));
-        swarm.addParticle(new Particle(300, 200));
-        swarm.addParticle(new Particle(200, 300));
-
-
-        score = 0;
+        swarm = new Swarm(new Queen(startingX, startingY));
+        for(int x=0; x<NUM_PARTICLES; x++)
+        {
+            swarm.addParticle(new Particle(startingX + randParticleDistance(), startingY + randParticleDistance()));
+        }
     }
 
-    Player(String name)
+    //returns an int between -50 and 50
+    private int randParticleDistance()
     {
-        init(name, "");
-    }
-
-
-    public Player(String name, String password)
-    {
-        init(name, password);
+        return (int)(Math.random()*100 - 50);
     }
 
     public String getName()
@@ -66,8 +57,13 @@ public class Player {
         return password;
     }
 
-    void addScore(int inc)
+    public int getMoveX()
     {
-        score+=inc;
+        return moveX;
+    }
+
+    public int getMoveY()
+    {
+        return moveY;
     }
 }

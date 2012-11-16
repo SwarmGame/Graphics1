@@ -6,6 +6,7 @@ import commonlib.network.GameServerClientInitialization;
 import commonlib.network.GameServerRequestAuth;
 import commonlib.network.GameServerRequestMove;
 import server.Game;
+import server.Main;
 import server.Player;
 
 import java.io.IOException;
@@ -19,22 +20,17 @@ import java.util.Set;
  *
  * Client
  */
-public class GameServer {
-    Server server;
-    Game game;
-    // GameServerClient client;
+public class GameServer
+{
+    private Server server;
+    private Game game;
     // Hash table that maps connections to player objects.
     // Currently connected players only
-    //
     Hashtable<Connection, Player> players;
-    //Set<Player>
-
-    public int debug;
 
     public GameServer(Game game) throws IOException
     {
         this.game = game;
-        debug = 0;
         players = new Hashtable<Connection, Player>();
         server = new Server();
         GameServerClientInitialization.initialize(server.getKryo());
@@ -56,18 +52,18 @@ public class GameServer {
     public void connected(Connection connection)
     {
        // Client has connected, but hasn't been authenticated yet
-       if (debug > 1)
+       if (Main.DEBUG > 1)
            System.out.printf("New client connected. Awaiting GameServerRequestAuth object");
     }
 
     public void disconnected(Connection connection)
     {
         // Notify game about disconnection and remove player from hash table
-        if (debug > 1)
+        if (Main.DEBUG > 1)
         {
             Player player =  players.get(connection);
             System.out.printf("client disconnected: %s", player.getName());
-         }
+        }
         if (players != null)
         {
             game.disconnectPlayer(players.get(connection));
@@ -80,30 +76,26 @@ public class GameServer {
 
         Player player = null;
 
-        // First, check if it's an authentification request from client.
-        // Currently, we only check username.
-
+        // First, check if it's an authentication request from client.
         if (object.getClass() == GameServerRequestAuth.class)
         {
             // Client connected or reconnected
             GameServerRequestAuth request = (GameServerRequestAuth) object;
 
             // login and password verification is actually done by createNewPlayer function
-            //player = game.createNewPlayer(request.getName());
-
             player = game.verifyPlayer(request.getName(), request.getPassword());
 
             if (player != null)
             {
-                 players.put(connection, player);
-                if (debug > 0)
+                players.put(connection, player);
+                if (Main.DEBUG > 0)
                 {
                     System.out.printf("Client authenticated: %s", player.getName());
                 }
             }
             else
             {
-                if (debug > 0)
+                if (Main.DEBUG > 0)
                 {
                     System.out.printf("Client authentication failed %s:%s", request.getName(), request.getPassword());
                 }
@@ -114,26 +106,16 @@ public class GameServer {
 
         // It's not a connection request.
         player = players.get(connection);
-        if (player == null) {
-            if (debug > 0)
+        if (player == null)
+        {
+            if (Main.DEBUG > 0)
                 System.out.println("ERROR: GameServer::received - player isn't found in players hash table");
-            //return;
         }
 
-        if (debug > 1)
+        if (Main.DEBUG > 1)
         {
             System.out.printf("Object received: %s", object.getClass());
-            //System.out.println(object.getClass());
         }
-
-        // Now figure out what to do
-//        if (object.getClass() == GameServerRequestAuth.class)
-//        {
-//           // Client connected or reconnected
-//           GameServerRequestAuth request = (GameServerRequestAuth) object;
-//           player = game.createNewPlayer(request.getName());
-//           players.put(connection, player);
-//        }
 
         if (object.getClass() == GameServerRequestMove.class)
         {
@@ -165,7 +147,7 @@ public class GameServer {
         }
         else
         {
-            if (debug > 0)
+            if (Main.DEBUG > 0)
                 System.out.println("GameServer::send - can't find connection corresponding to player");
             return;
         }
@@ -185,7 +167,7 @@ public class GameServer {
            Connection connection = (Connection)itr.next();
            if (connection != null)
                 connection.sendTCP(object);
-           else if (debug > 1)
+           else if (Main.DEBUG > 1)
                System.out.println("sendToAll: null pointer in hash table");
        }
     }

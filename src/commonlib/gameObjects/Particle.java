@@ -1,14 +1,16 @@
 package commonlib.gameObjects;
 
 /**
- * Created with IntelliJ IDEA.
+ * Particle
  * User: Derek
  * Date: 11/8/12
  * Time: 10:11 AM
- * To change this template use File | Settings | File Templates.
+ * Stores information for particles that move around their queen
  */
 public class Particle
 {
+    public static final int RADIUS = 2;
+    public static final int MAX_SPEED = 3;
     private double x;
     private double y;
     private double velocityX;
@@ -46,19 +48,23 @@ public class Particle
         this.y = y;
     }
 
-    public double getVelocityX() {
+    public double getVelocityX()
+    {
         return velocityX;
     }
 
-    public void setVelocityX(double velocityX) {
+    public void setVelocityX(double velocityX)
+    {
         this.velocityX = velocityX;
     }
 
-    public double getVelocityY() {
+    public double getVelocityY()
+    {
         return velocityY;
     }
 
-    public void setVelocityY(double velocityY) {
+    public void setVelocityY(double velocityY)
+    {
         this.velocityY = velocityY;
     }
 }

@@ -1,21 +1,21 @@
 package commonlib.network;
 
 /**
- * Created with IntelliJ IDEA.
+ * Game Server Request Move
  * User: ALEXANDER
  * Date: 11/10/12
  * Time: 9:17 PM
- * To change this template use File | Settings | File Templates.
  */
-public class GameServerRequestMove extends GameServerRequest {
-    int x;
-    int y;
+public class GameServerRequestMove extends GameServerRequest
+{
+    private int x;
+    private int y;
 
     public GameServerRequestMove()
     {}
 
-    public GameServerRequestMove(int x, int y) {
-        //super(type);
+    public GameServerRequestMove(int x, int y)
+    {
         this.x = x;
         this.y = y;
     }

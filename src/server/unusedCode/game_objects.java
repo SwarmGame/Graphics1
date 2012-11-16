@@ -1,43 +1,44 @@
-package server;
+package server.unusedCode;
 
 //import java.util.ArrayList;
 
 import java.util.ArrayList;
 
-public abstract class game_objects{
+public abstract class game_objects
+{
 	//public abstract class game_objects_base {
-		Shape        shape;
-		D2vector     cor;
-		D2vector     vel;
-        double      max_radius;
-		boolean      is_controlable;
-		//public enum object_type{Raw,Queen, Nutrition, Particle};
-		//object_type objtype;
-		double dt;
+    Shape shape;
+    D2vector cor;
+    D2vector     vel;
+    double      max_radius;
+    boolean      is_controlable;
+    //public enum object_type{Raw,Queen, Nutrition, Particle};
+    //object_type objtype;
+    double dt;
 
-		int move() // problematic : how to handle collision?
-		{
-	       	cor.setx(cor.getx()+dt*vel.getx());
-	       	cor.sety(cor.gety()+dt*vel.gety());
-	       	return 1;
-		}
-		void change_vel(D2vector new_vel)
-		{
-			this.vel.assign(new_vel);
-		}
-		void get_next_vel(D2vector acc)
-		{
-			this.vel.assign(this.vel.plus(acc.multi(dt)));
-		}
-		abstract void apply_to_map(game_map gmap);
-        abstract void Printmyself();
-		public static void main(String[] args)
-	    {
-	    	D2vector l1 = new D2vector(1,1);
-	    	queen obj1 = new queen(l1);
-	    	game_objects obj2 = new fighting_particle(l1,l1,obj1);
-	    	game_objects obj3 = new nutriant(l1);
-	    }
+    int move() // problematic : how to handle collision?
+    {
+        cor.setx(cor.getx()+dt*vel.getx());
+        cor.sety(cor.gety()+dt*vel.gety());
+        return 1;
+    }
+    void change_vel(D2vector new_vel)
+    {
+        this.vel.assign(new_vel);
+    }
+    void get_next_vel(D2vector acc)
+    {
+        this.vel.assign(this.vel.plus(acc.multi(dt)));
+    }
+    abstract void apply_to_map(game_map gmap);
+    abstract void Printmyself();
+    public static void main(String[] args)
+    {
+        D2vector l1 = new D2vector(1,1);
+        queen obj1 = new queen(l1);
+        game_objects obj2 = new fighting_particle(l1,l1,obj1);
+        game_objects obj3 = new nutriant(l1);
+    }
 }
 
 //}

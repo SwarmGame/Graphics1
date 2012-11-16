@@ -1,4 +1,5 @@
-package server;
+package server.unusedCode;
+
 public abstract class   skills {  // skills could be obtained from nutriants
        boolean is_instant;
 

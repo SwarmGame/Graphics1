@@ -6,8 +6,9 @@ import com.esotericsoftware.kryonet.Listener;
 /**
  * This class implements callback functions called from cryonet library
  */
-public class GameServerListener extends Listener {
-    GameServer server;
+public class GameServerListener extends Listener
+{
+    private GameServer server;
 
     public GameServerListener(GameServer server)
     {
@@ -20,7 +21,6 @@ public class GameServerListener extends Listener {
      */
     public void connected(Connection connection)
     {
-        //System.out.println("Connected");
         if (server != null)
             server.connected(connection);
         else
@@ -32,7 +32,6 @@ public class GameServerListener extends Listener {
      */
     public void disconnected(Connection connection)
     {
-        //System.out.println("Disconnected");
         server.disconnected(connection);
     }
 
@@ -43,8 +42,6 @@ public class GameServerListener extends Listener {
      */
     public void received(Connection connection, Object object)
     {
-        //System.out.println("Receive:");
-        //System.out.println(object);
         server.received(connection, object);
     }
 }
