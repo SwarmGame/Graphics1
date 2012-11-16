@@ -13,7 +13,8 @@ public abstract class game_objects{
 		boolean      is_controlable;
 		//public enum object_type{Raw,Queen, Nutrition, Particle};
 		//object_type objtype;
-		double dt; 
+		double dt;
+
 		int move() // problematic : how to handle collision?
 		{
 	       	cor.setx(cor.getx()+dt*vel.getx());
@@ -29,6 +30,7 @@ public abstract class game_objects{
 			this.vel.assign(this.vel.plus(acc.multi(dt)));
 		}
 		abstract void apply_to_map(game_map gmap);
+        abstract void Printmyself();
 		public static void main(String[] args)
 	    {
 	    	D2vector l1 = new D2vector(1,1);
@@ -53,9 +55,24 @@ class queen extends game_objects{
         is_controlable = true;
         cor = loc;
         vel = new D2vector(0,0);
-        shape = new Shape();
-        System.out.println("queen constructed");
+        max_radius = 10;
+        shape = new Shape(loc,max_radius);
+        System.out.format("queen constructed at location"); cor.Print();
         //objtype = object_type.Queen;
+    }
+    queen(D2vector loc, game_map map)
+    {
+        is_controlable = true;
+        cor = loc;
+        vel = new D2vector(0,0);
+        shape = new Shape();
+        System.out.format("queen constructed at location"); cor.Print();
+        apply_to_map(map);
+    }
+    void Printmyself()
+    {
+        System.out.println("I am a queen");
+        System.out.format("centered at :"); cor.Print();
     }
 boolean regenerate()
 {
@@ -86,13 +103,30 @@ class fighting_particle extends game_objects{
         is_controlable = false;
         cor = loc;
         vel = init_vel;
-        shape = new Shape();
+        max_radius = 2;
+        shape = new Shape(loc,max_radius);
         parent = par;
         System.out.println("particle constructed");
     }
     void apply_to_map(game_map gmap) {
+        int N = shape.nodes.size();
+        int i, coord_m,coord_n;
 
+        for(i=0;i<N;i++)
+        {
+            coord_m = shape.nodes.get(i).get_mcor();
+            coord_n = shape.nodes.get(i).get_ncor();
+            if(gmap.is_inmap(coord_m,coord_n))
+            {
+                gmap.map_grid[coord_m][coord_n].set_obj(this);
+            }
+        }
 
+    }
+    void Printmyself()
+    {
+        System.out.println("I am a particle");
+        System.out.format("centered at :"); cor.Print();
     }
 }
 
@@ -119,6 +153,11 @@ class nutriant extends game_objects
         // TODO Auto-generated method stub
 
     }
+    void Printmyself()
+    {
+        System.out.println("I am a nutriant");
+        System.out.format("centered at :"); cor.Print();
+    }
 }
 
 class empty extends game_objects
@@ -132,5 +171,10 @@ class empty extends game_objects
     }
     void apply_to_map(game_map gmap) {
 
+    }
+    void Printmyself()
+    {
+        System.out.println("I am an empty object");
+        System.out.format("centered at :"); cor.Print();
     }
 }

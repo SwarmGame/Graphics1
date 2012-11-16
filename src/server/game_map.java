@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 //import java.util.ArrayList;
 //import java.util.List;
 
@@ -286,8 +287,17 @@ game_map(int X_len, int Y_len)
     }
     prob_distr = new D2distr(M,N);
     game_objs = new ArrayList<game_objects>();
+    spawn_locs = new ArrayList<D2vector>();
     center_m = M/2;
     center_n = N/2;
+}
+void apply_all_objs_tomap()
+{
+    System.out.format("Now updating objs to map, total number of objs is :%d%n",game_objs.size());
+    for(int i=0;i<game_objs.size();i++)
+    {
+        game_objs.get(i).apply_to_map(this);
+    }
 }
 int initialize_map(int num_players, ArrayList<zone_func> prob_funcs)
 {
@@ -295,9 +305,19 @@ int initialize_map(int num_players, ArrayList<zone_func> prob_funcs)
     // need to generate probability density function and cumulative density function
     spawn_locs = get_spawn_locs(num_players, M, N);
     prob_distr.Initialize_distri(prob_funcs);
+    spwan_queen();
     //init_CDF(prob_distr,prob_funcs);
     //has_bornloc_flag = false;
     return 1;
+}
+boolean spwan_queen()
+{
+    for(int i = 0;i<spawn_locs.size();i++)
+    {
+        queen q1 = new queen(spawn_locs.get(i));
+        game_objs.add(q1);
+    }
+    return true;
 }
 int update_map()
 {
@@ -314,6 +334,11 @@ boolean is_empty(D2vector vec,game_objects obj) // test whether I can put obj at
         return false;
     }
 }
+game_situation get_gamesituation(D2vector center, int M_range, int N_range)
+  {
+      game_situation result = new  game_situation(this,center,M_range,N_range);
+      return result;
+ }
 boolean generate_new_nutriant()
 {
     int max_num_try = 100;
@@ -337,13 +362,20 @@ boolean generate_new_nutriant()
 public static void main(String[] args)
 {
     game_map mygamemap = new game_map(1000,1000);
+    game_situation cur_game;
+    cur_game = mygamemap.get_gamesituation(new D2vector(500,500),200,200);
+    cur_game.Print_size();
     //zone_func func1 = new zone_func(5,mygamemap.center_m,mygamemap.center_n,100,10);
     zone_func func1 = mygamemap.new zone_func(5,500,500,100,10);
     ArrayList<zone_func> funcs = new ArrayList<zone_func>();
     funcs.add(func1);
     mygamemap.initialize_map(3,funcs);
-    mygamemap.generate_new_nutriant();
-    mygamemap.generate_new_nutriant();
+    mygamemap.apply_all_objs_tomap();
+    cur_game = mygamemap.get_gamesituation(new D2vector(150,300),300,300);
+    cur_game.Print_size();
+    //mygamemap.generate_new_nutriant();
+    //mygamemap.generate_new_nutriant();
+    //queen q1 = new queen(mygamemap.spawn_locs.get(0));
     System.out.println("init success");
 }
 }

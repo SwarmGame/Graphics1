@@ -1,7 +1,8 @@
 package server;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,9 +18,53 @@ public class game_situation {
     {
         int M_low, M_high;
         int N_low, N_high;
+        M_low = center.get_mcor() - M_range/2;
+        M_high =  center.get_mcor() + M_range/2;
+        N_low = center.get_ncor() - N_range/2;
+        N_high =  center.get_ncor() + N_range/2;
+        if(M_low<0)
+        {
+            M_low =0;
+        }
+        if(M_high>map.M)
+        {
+            M_high = map.M;
+        }
+        if(N_low<0)
+        {
+            N_low =0;
+        }
+        if(N_high>map.N)
+        {
+            N_high =map.N;
+        }
         objs_local = new ArrayList<game_objects>();
         user_center = new D2vector(center);
-        Set<game_objects> objset;
-
+        Set<game_objects> objset = new HashSet<game_objects>();
+        for(int i=M_low;i<M_high;i++)
+        {
+            for(int j=N_low;j<N_high;j++)
+            {
+                objset.add((map.map_grid[i][j]).gobj);
+            }
+        }
+        Iterator<game_objects> it = objset.iterator();
+        while (it.hasNext()) {
+            objs_local.add(it.next()) ;
+        }
+    }
+    game_situation()
+    {
+        objs_local = new ArrayList<game_objects>();
+        user_center = new D2vector();
+    }
+    void Print_size()
+    {
+        System.out.format("number of objs in the game situation: %d%n",objs_local.size());
+        for(int i=0;i<objs_local.size();i++)
+        {
+              objs_local.get(i).Printmyself();
+        }
+        System.out.format("game situation centered at "); user_center.Print();
     }
 }
