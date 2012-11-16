@@ -1,5 +1,6 @@
 package server;
 
+import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerResponseGameOver;
 import server.network.GameServer;
@@ -17,7 +18,7 @@ public class Game {
 
     Player player1;
     Player player2;
-    Swarm swarm;
+   // Swarm swarm;
 //  Map
 //  EventQueue
 //
@@ -26,10 +27,10 @@ public class Game {
         return networkController;
     }
 
-    public Swarm getSwarm()
-    {
-        return swarm;
-    }
+//    public Swarm getSwarm()
+//    {
+//        return swarm;
+//    }
 
     void start()
     {
@@ -57,6 +58,7 @@ public class Game {
         int timeout = 0;
         while (true)
         {
+            GameSituationSerialized gameSituation = new GameSituationSerialized();
             try {
                 timeout++;
                 Thread.sleep(1000/30);
@@ -67,6 +69,13 @@ public class Game {
                     // Calculate game situation
                     // Calculate
                     // Send game situation to everyone
+
+
+                    gameSituation.swarm1 = player1.getSwarm();
+                    gameSituation.swarm2 = player2.getSwarm();
+
+                    gameServer.sendToAll(gameSituation);
+
                     gameServer.sendToAll(player1.getSwarm());
 
                     //swarm.move();
