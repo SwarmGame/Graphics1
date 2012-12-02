@@ -23,6 +23,7 @@ public class Main
         {
             System.out.println("You must specify Player 1 name, Player 1 password, Player 2 name, and Player 2 password");
             System.exit(1);
+
         }
     }
 }
