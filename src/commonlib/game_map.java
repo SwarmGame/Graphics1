@@ -432,7 +432,7 @@ void print_occupation_stat()
 }
 public static void main(String[] args)
 {
-    game_map mygamemap = new game_map(10,10);
+    game_map mygamemap = new game_map(20,20);
     mygamemap.print_occupation_stat();
     game_situation cur_game;
     cur_game = mygamemap.get_gamesituation(new D2vector(500,500),200,200);
@@ -441,10 +441,10 @@ public static void main(String[] args)
     //zone_func func1 = mygamemap.new zone_func(5,500,500,100,10);
     //ArrayList<zone_func> funcs = new ArrayList<zone_func>();
     //funcs.add(func1);
-    mygamemap.initialize_map(0);
+    mygamemap.initialize_map(1);
     //mygamemap.apply_all_objs_tomap();
     mygamemap.print_occupation_stat();
-    mygamemap.generate_new_nutrient(13);
+    mygamemap.generate_new_nutrient(10);
     mygamemap.print_occupation_stat();
     cur_game = mygamemap.get_gamesituation(new D2vector(150,300),300,300);
     cur_game.Print_size();
