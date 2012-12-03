@@ -1,4 +1,4 @@
-package server.unusedCode;
+package commonlib;
 
 public abstract class   skills {  // skills could be obtained from nutriants
        boolean is_instant;
