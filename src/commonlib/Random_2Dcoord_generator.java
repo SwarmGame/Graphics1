@@ -1,4 +1,4 @@
-package server.unusedCode;
+package commonlib;
 import java.util.Random;
 
 /**
@@ -9,10 +9,14 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public final class Random_2Dcoord_generator {
-    // this class generates a random coordinate on a two dim map with higher probability around center
+    // this class generates a random coordinate on a two dim map with higher probability near center
     // x from x_min to x_max, y from y_min to y_max, boundary value included
     // because of 3-sigma rule, the random number we obtain from java gaussian will be range from -3 to 3, with 99.7% confidence.
-    Random fRandom = new Random();
+    Random fRandom;
+    Random_2Dcoord_generator()
+    {
+        fRandom = new Random();
+    }
     public D2index get_random_2Dcoord(int min_x, int max_x, int min_y, int max_y)
     {
         double rand1 = fRandom.nextGaussian();
@@ -42,6 +46,7 @@ public final class Random_2Dcoord_generator {
         D2index result = new D2index(x_coord,y_coord);
         //System.out.format("new random coordinate generated: "); result.Print();
         return result;
+
     }
     private int get_closet_int(double a)
     {
@@ -66,11 +71,11 @@ public final class Random_2Dcoord_generator {
         for(i=0;i<1000000;i++)
         {
             tmp = my_2d_ran_gen.get_random_2Dcoord(0,1000,0,1000);
-            if(tmp.x_cor ==999)
+            if(tmp.m_cor ==300)
             {
                 count_5++;
             }
-            if(tmp.x_cor ==0)
+            if(tmp.n_cor ==0)
             {
                 count_0++;
             }

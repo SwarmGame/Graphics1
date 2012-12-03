@@ -1,7 +1,6 @@
-package server.unusedCode;
+package commonlib;
 
 import java.util.ArrayList;
-import java.util.Random;
 //import java.util.ArrayList;
 //import java.util.List;
 
@@ -15,7 +14,8 @@ public class game_map {
 gridpt[][]              map_grid;
 ArrayList<D2vector>     spawn_locs;
 ArrayList<game_objects> game_objs;
-D2distr                 prob_distr;
+//D2distr                 prob_distr;
+Random_2Dcoord_generator rand_generator;
 int M, N;
 int i,j;
 int center_m;
@@ -45,7 +45,33 @@ public class gridpt
         gobj = emptyobj;
     }
 }
-public class D2distr
+gridpt get_gridpt(D2index coord)
+{
+    return  map_grid[coord.m_cor][coord.n_cor];
+}
+boolean is_occupied(D2index coord)
+{
+    if(is_inside_map(coord))
+    {
+        if(get_gridpt(coord).gobj!=emptyobj)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+boolean is_inside_map(D2index coord)
+{
+   if(coord.m_cor>=0&&coord.m_cor<M&&coord.n_cor>=0&&coord.n_cor<N)
+   {
+       return true;
+   }
+    else
+   {
+       return false;
+   }
+}
+/*public class D2distr
 {
     private int DM, DN; // scope of the distribution function
     private double prob_dividend;  //total
@@ -245,7 +271,7 @@ public class zone_func
         }
         return true;
     }
-}
+}     */
 
 ArrayList<D2vector> get_spawn_locs(int num, int M, int N)
 {
@@ -271,7 +297,7 @@ ArrayList<D2vector> get_spawn_locs(int num, int M, int N)
     return result;
 }
 
-game_map(int X_len, int Y_len)
+public game_map(int X_len, int Y_len)
 {
     emptyobj = new empty();
     this.N = X_len;
@@ -284,11 +310,12 @@ game_map(int X_len, int Y_len)
             map_grid[ii][jj] = new gridpt(emptyobj,ii,jj);
         }
     }
-    prob_distr = new D2distr(M,N);
+    //prob_distr = new D2distr(M,N);
     game_objs = new ArrayList<game_objects>();
     spawn_locs = new ArrayList<D2vector>();
     center_m = M/2;
     center_n = N/2;
+    rand_generator = new Random_2Dcoord_generator();
 }
 void apply_all_objs_tomap()
 {
@@ -298,12 +325,12 @@ void apply_all_objs_tomap()
         game_objs.get(i).apply_to_map(this);
     }
 }
-int initialize_map(int num_players, ArrayList<zone_func> prob_funcs)
+//int initialize_map(int num_players, ArrayList<zone_func> prob_funcs)
+int initialize_map(int num_players)
 {
     // need to init spawn loc based on number of players
-    // need to generate probability density function and cumulative density function
     spawn_locs = get_spawn_locs(num_players, M, N);
-    prob_distr.Initialize_distri(prob_funcs);
+    //prob_distr.Initialize_distri(prob_funcs);
     spwan_queen();
     //init_CDF(prob_distr,prob_funcs);
     //has_bornloc_flag = false;
@@ -313,8 +340,9 @@ boolean spwan_queen()
 {
     for(int i = 0;i<spawn_locs.size();i++)
     {
-        queen q1 = new queen(spawn_locs.get(i));
+        queen q1 = new queen(spawn_locs.get(i),this);
         game_objs.add(q1);
+        //q1.apply_to_map(this);
     }
     return true;
 }
@@ -322,26 +350,16 @@ int update_map()
 {
     return 1;
 }
-boolean is_empty(D2vector vec,game_objects obj) // test whether I can put obj at location vec?
-{
-    if(map_grid[(int) vec.getx()][(int) vec.gety()].gobj == emptyobj)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
+
 game_situation get_gamesituation(D2vector center, int M_range, int N_range)
   {
       game_situation result = new  game_situation(this,center,M_range,N_range);
       return result;
  }
-boolean generate_new_nutriant()
+/*boolean generate_new_nutriant()
 {
-    int max_num_try = 100;
-    nutriant new_nutriant = new nutriant();
+    int max_num_try = 1000;
+    nutrient new_nutrient = new nutrient();
     D2vector attempt_cor = new D2vector();
     int i=0;
     while(i<max_num_try)
@@ -356,20 +374,78 @@ boolean generate_new_nutriant()
         }
         i++;
     }
-    return false;
+    return;
+}
+    */
+boolean generate_new_nutrient(int num)
+{
+    final int max_num_try_per_nutrient = 1000;
+    final int max_num_nutrient_onetime  = 100;
+    assert(num< max_num_nutrient_onetime);
+    int i,j;
+    //boolean max_iter_flag;
+    D2index  mytry;
+    nutrient mynewnutrient;
+    for(i=0;i<num;i++)
+    {
+        j=0;
+        //max_iter_flag =true;
+        do{
+            mytry = rand_generator.get_random_2Dcoord(0,M,0,N);
+            mynewnutrient = new nutrient(mytry.to_vector());
+            j++;
+        }
+        while(!mynewnutrient.is_fit(this)||j>=max_num_try_per_nutrient);
+        if(j>=max_num_try_per_nutrient)
+        {
+            return false;
+        }
+        else
+        {
+            mynewnutrient.Printmyself();
+            mynewnutrient.apply_to_map(this);
+        }
+    }
+    return true;
+}
+void print_occupation_stat()
+{
+    int total_grid_point=M*N;
+    int occupied_grid_point=0;
+    double percentage;
+    int i,j;
+    D2index tmpindx;
+    for(i=0;i<M;i++)
+    {
+        for(j=0;j<N;j++)
+        {
+            tmpindx = new D2index(i,j);
+            if(is_occupied(tmpindx))
+            {
+                occupied_grid_point++;
+            }
+        }
+    }
+    percentage = (double)(occupied_grid_point)/(double)(total_grid_point);
+    System.out.format("There are %d total grid points in the map, %d of which are occupied, occupation percentage is %e",
+            total_grid_point, occupied_grid_point,percentage );
 }
 public static void main(String[] args)
 {
-    game_map mygamemap = new game_map(1000,1000);
+    game_map mygamemap = new game_map(10,10);
+    mygamemap.print_occupation_stat();
     game_situation cur_game;
     cur_game = mygamemap.get_gamesituation(new D2vector(500,500),200,200);
     cur_game.Print_size();
     //zone_func func1 = new zone_func(5,mygamemap.center_m,mygamemap.center_n,100,10);
-    zone_func func1 = mygamemap.new zone_func(5,500,500,100,10);
-    ArrayList<zone_func> funcs = new ArrayList<zone_func>();
-    funcs.add(func1);
-    mygamemap.initialize_map(3,funcs);
-    mygamemap.apply_all_objs_tomap();
+    //zone_func func1 = mygamemap.new zone_func(5,500,500,100,10);
+    //ArrayList<zone_func> funcs = new ArrayList<zone_func>();
+    //funcs.add(func1);
+    mygamemap.initialize_map(0);
+    //mygamemap.apply_all_objs_tomap();
+    mygamemap.print_occupation_stat();
+    mygamemap.generate_new_nutrient(13);
+    mygamemap.print_occupation_stat();
     cur_game = mygamemap.get_gamesituation(new D2vector(150,300),300,300);
     cur_game.Print_size();
     //mygamemap.generate_new_nutriant();

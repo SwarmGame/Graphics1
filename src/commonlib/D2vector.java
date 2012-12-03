@@ -1,4 +1,4 @@
-package server.unusedCode;
+package commonlib;
 
 import java.util.Random;
 
@@ -94,6 +94,36 @@ public class D2vector {
       {
     	  D2vector result = new D2vector(this.x-v2.getx(),this.y-v2.gety());
     	  return result;
+      }
+      D2index  to_index()
+      {
+          int m = (int)y;
+          int n = (int)x;
+          D2index result= new D2index(m,n);
+          return result;
+      }
+      double Modul()
+      {
+          return Math.sqrt(x*x+y*y);
+      }
+      D2vector unitified()
+      {
+          double modul = Modul();
+          double newx,newy;
+          D2vector result;
+          if(modul!=0)
+          {
+              newx = x/modul;
+              newy = y/modul;
+              result = new D2vector(newx, newy);
+          }
+          else
+          {
+              newx = 0.0;
+              newy = 0.0;
+              result = new D2vector(newx, newy);
+          }
+          return result;
       }
       public void Print()
   	  {
