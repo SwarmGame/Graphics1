@@ -325,22 +325,33 @@ void apply_all_objs_tomap()
         game_objs.get(i).apply_to_map(this);
     }
 }
+boolean remove_obj(game_objects obj)
+{
+    int N = game_objs.size();
+    int i;
+    for(i=0;i<N;i++)
+    {
+        if(game_objs.get(i)==obj)
+        {
+            game_objs.remove(i);
+            return true;
+        }
+    }
+    return false;
+}
 //int initialize_map(int num_players, ArrayList<zone_func> prob_funcs)
-int initialize_map(int num_players)
+public void initialize_map(int num_players)
 {
     // need to init spawn loc based on number of players
     spawn_locs = get_spawn_locs(num_players, M, N);
-    //prob_distr.Initialize_distri(prob_funcs);
     spwan_queen();
-    //init_CDF(prob_distr,prob_funcs);
-    //has_bornloc_flag = false;
-    return 1;
+    return;
 }
 boolean spwan_queen()
 {
     for(int i = 0;i<spawn_locs.size();i++)
     {
-        queen q1 = new queen(spawn_locs.get(i),this);
+        Queen q1 = new Queen(spawn_locs.get(i),this);
         game_objs.add(q1);
         //q1.apply_to_map(this);
     }
@@ -377,7 +388,7 @@ game_situation get_gamesituation(D2vector center, int M_range, int N_range)
     return;
 }
     */
-boolean generate_new_nutrient(int num)
+public boolean generate_new_nutrient(int num)
 {
     final int max_num_try_per_nutrient = 1000;
     final int max_num_nutrient_onetime  = 100;
@@ -395,9 +406,10 @@ boolean generate_new_nutrient(int num)
             mynewnutrient = new nutrient(mytry.to_vector());
             j++;
         }
-        while(!mynewnutrient.is_fit(this)||j>=max_num_try_per_nutrient);
+        while(!mynewnutrient.is_fit(this)&&j<max_num_try_per_nutrient);
         if(j>=max_num_try_per_nutrient)
         {
+            System.out.format("max try in random generation of particles reached, possibly because the map is full\n");
             return false;
         }
         else
@@ -407,6 +419,14 @@ boolean generate_new_nutrient(int num)
         }
     }
     return true;
+}
+public void remove_last_item()
+{
+    int N = game_objs.size();
+    System.out.format("total item number is %d, removing %dth ele!", N,N-1) ;
+    game_objects obj = game_objs.get(N-1);
+    obj.remove_from_map(this);
+    //game_objs.remove(N-1);
 }
 void print_occupation_stat()
 {
@@ -450,7 +470,7 @@ public static void main(String[] args)
     cur_game.Print_size();
     //mygamemap.generate_new_nutriant();
     //mygamemap.generate_new_nutriant();
-    //queen q1 = new queen(mygamemap.spawn_locs.get(0));
+    //Queen q1 = new Queen(mygamemap.spawn_locs.get(0));
     System.out.println("init success");
 }
 }

@@ -82,6 +82,7 @@ public class MovementController
 
             particle.setX(particle.getX() + particle.getVelocityX());
             particle.setY(particle.getY() + particle.getVelocityY());
+
         }
     }
 }

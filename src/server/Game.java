@@ -3,6 +3,7 @@ package server;
 import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Swarm;
 import commonlib.network.GameServerResponseGameOver;
+import commonlib.*;
 import server.network.GameServer;
 
 import java.io.IOException;
@@ -26,6 +27,8 @@ public class Game
     private String player2Name;
     private String player1Password;
     private String player2Password;
+
+    private game_map mygamemap;
 
     public Game(String player1Name, String player1Password, String player2Name, String player2Password)
     {
@@ -52,6 +55,17 @@ public class Game
             e.printStackTrace();
         }
 
+        mygamemap = new game_map(1000,1000);
+        mygamemap.initialize_map(0);
+        //mygamemap.generate_new_nutrient(30);
+        int i =0;
+        while(i<10000)
+        {
+           mygamemap.generate_new_nutrient(1);
+           mygamemap.remove_last_item();
+           i++;
+        }
+
         movementController = new MovementController();
         networkController = new NetworkController(this);
         gameStateController = new GameStateController();
@@ -67,6 +81,9 @@ public class Game
             {
                 timeout++;
                 Thread.sleep(TIME_BETWEEN_UPDATES);
+
+                //mygamemap.generate_new_nutrient(1);
+                //mygamemap.remove_last_item();
 
                 movementController.moveSwarm(player1);
                 movementController.moveSwarm(player2);

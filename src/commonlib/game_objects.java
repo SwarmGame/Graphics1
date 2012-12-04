@@ -3,6 +3,7 @@ package commonlib;
 //import java.util.ArrayList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class game_objects
 {
@@ -16,11 +17,29 @@ public abstract class game_objects
     //object_type objtype;
     double dt;
 
-    int move() // problematic : how to handle collision?
+    void move()
     {
         cor.setx(cor.getx()+dt*vel.getx());
         cor.sety(cor.gety()+dt*vel.gety());
-        return 1;
+        return ;
+    }
+    void reverse_move()
+    {
+        cor.setx(cor.getx()-dt*vel.getx());
+        cor.sety(cor.gety()-dt*vel.gety());
+        return ;
+    }
+    void move(game_map gmap)
+    {
+        this.move();
+        if(!this.is_fit(gmap))
+        {
+            this.apply_to_map(gmap);
+        }
+        else
+        {
+            this.reverse_move();
+        }
     }
     void change_vel(D2vector new_vel)
     {
@@ -51,19 +70,38 @@ public abstract class game_objects
                 //System.out.format("changed objtype!\n");
             }
         }
+        gmap.game_objs.add(this);
+    }
+    void remove_from_map(game_map gmap)
+    {
+        int N = shape.nodes.size();
+        //System.out.format("N = %d\n",N);
+        int i;
+        D2index tmpindx;
+        for(i=0;i<N;i++)
+        {
+            tmpindx = shape.nodes.get(i).to_index();
+            if(gmap.is_inside_map(tmpindx))
+            {
+                gmap.map_grid[tmpindx.m_cor][tmpindx.n_cor].set_obj(gmap.emptyobj);
+                //System.out.format("set point empty!\n");
+            }
+        }
+        gmap.remove_obj(this);
+
     }
     abstract void Printmyself();
     public static void main(String[] args)
     {
         D2vector l1 = new D2vector(1,1);
-        queen obj1 = new queen(l1);
-        game_objects obj2 = new fighting_particle(l1,l1,obj1);
+        Queen obj1 = new Queen(l1);
+        game_objects obj2 = new Particle(l1,l1,obj1);
         game_objects obj3 = new nutrient(l1);
     }
 }
 
 //}
-class queen extends game_objects{
+class Queen extends game_objects{
     //enum STATUS{SPEED, GROWTH, ATTACK,DEFEND};
     int max_health_point;
     int cur_health_point;
@@ -72,28 +110,28 @@ class queen extends game_objects{
     int armor;
     int ID;
     ArrayList<skills> available_skills;
-    queen(D2vector loc)
+    Queen(D2vector loc)
     {
         is_controlable = true;
         cor = loc;
         vel = new D2vector(0,0);
         max_radius = 10;
         shape = new Shape(loc,max_radius);
-        //System.out.format("queen constructed at location"); cor.Print();
+        //System.out.format("Queen constructed at location"); cor.Print();
         //objtype = object_type.Queen;
     }
-    queen(D2vector loc, game_map map)
+    Queen(D2vector loc, game_map map)
     {
         is_controlable = true;
         cor = loc;
         vel = new D2vector(0,0);
         shape = new Shape(cor,10);
-        System.out.format("queen constructed at location"); cor.Print();
+        System.out.format("Queen constructed at location"); cor.Print();
         apply_to_map(map);
     }
     void Printmyself()
     {
-        System.out.println("I am a queen");
+        System.out.println("I am a Queen");
         System.out.format("centered at :"); cor.Print();
     }
 boolean regenerate()
@@ -104,9 +142,9 @@ return true;
 
 }
 
-class fighting_particle extends game_objects{
-    queen parent;
-    fighting_particle(D2vector loc,D2vector init_vel, queen par)
+class Particle extends game_objects{
+    Queen parent;
+    Particle(D2vector loc, D2vector init_vel, Queen par)
     {
         is_controlable = false;
         cor = loc;
@@ -114,7 +152,7 @@ class fighting_particle extends game_objects{
         max_radius = 2;
         shape = new Shape(loc,max_radius);
         parent = par;
-        System.out.println("particle constructed");
+        //System.out.println("particle constructed");
     }
     void Printmyself()
     {
@@ -146,6 +184,40 @@ class nutrient extends game_objects
     {
         System.out.println("I am a nutrient");
         System.out.format("centered at :"); cor.Print();
+    }
+}
+class Swarm extends game_objects
+{
+    private Queen queen;
+    private List<Particle> particles;
+
+    // Default constructor is required by Cryonet library
+    public Swarm(){}
+
+    public Swarm(Queen queen)
+    {
+        this.queen = queen;
+        particles = new ArrayList<Particle>();
+    }
+
+    public Queen getQueen()
+    {
+        return queen;
+    }
+
+    public List<Particle> getParticles()
+    {
+        return particles;
+    }
+
+    public void addParticle(Particle particle)
+    {
+        particles.add(particle);
+    }
+    void Printmyself()
+    {
+        System.out.println("I am a swarm");
+        System.out.format("centered at :"); queen.cor.Print();
     }
 }
 
