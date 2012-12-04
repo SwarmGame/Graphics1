@@ -15,6 +15,8 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game
@@ -31,6 +33,7 @@ public class Game extends BasicGame
     private static String password;
     private static String hostname;
     private static String port;
+    private List<Image> queenImages;
     private GameSituationSerialized gameSituationSerialized;
     private Image backgroundImage;
     private GameClient client;
@@ -55,15 +58,18 @@ public class Game extends BasicGame
         }
 
         client.send(new GameServerRequestAuth(username, password));
+        queenImages = new ArrayList<Image>();
 
         try
         {
-            Texture backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/dirt.jpg"));
+            queenImages.add(new Image("src/resources/queens/queen1.jpg"));
+            queenImages.add(new Image("src/resources/queens/queen2.jpg"));
+            Texture backgroundTexture = TextureLoader.getTexture("JPG", new FileInputStream("src/resources/textures/space1.jpg"));
             backgroundImage = new Image(backgroundTexture);
         }
         catch(IOException e)
         {
-            System.out.println("Background texture not found");
+            System.out.println("Image resources not found");
             System.out.println(e);
             System.exit(1);
         }
@@ -86,6 +92,7 @@ public class Game extends BasicGame
 
         int currentHP = swarm.getQueen().getHitPoints();
         g.setColor(g.getColor().darker((float)(Queen.MAX_HP - currentHP)/Queen.MAX_HP));
+        //g.texture(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), Queen.RADIUS), queenImages.get(0));
         g.fill(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), Queen.RADIUS));
     }
     // This method is called every time the game window is redrawn
