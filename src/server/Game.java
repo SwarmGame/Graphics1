@@ -66,7 +66,7 @@ public class Game
             e.printStackTrace();
         }
 
-        mygamemap = new game_map(1000,1000);
+        mygamemap = new game_map(Map.WIDTH,Map.HEIGHT);
         mygamemap.initialize_map(0);
         //mygamemap.generate_new_nutrient(30);
         int i =0;
@@ -106,7 +106,10 @@ public class Game
 
                 if(nutrientCounter % 100 == 0)
                 {
-                    generateNutrients(1);
+                    if(nutrients.size() < 5)
+                    {
+                        generateNutrients(1);
+                    }
                 }
 
                 gameSituation.setNutrients(nutrients);
