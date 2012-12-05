@@ -3,8 +3,10 @@ package server;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
-import commonlib.*;
-import server.network.GameServer;
+import commonlib.gameObjects2.nutrient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,7 +51,7 @@ public class GameStateController
         int damage = 0;
         for(Particle particle : attacker.getParticles())
         {
-            if(touching(defender.getQueen(), particle))
+            if(touchingParticle(defender.getQueen(), particle))
             {
                 damage++;
             }
@@ -57,12 +59,39 @@ public class GameStateController
         return damage;
     }
 
-    private boolean touching(Queen queen, Particle particle)
+    private boolean touchingParticle(Queen queen, Particle particle)
     {
         double distanceX = particle.getX() - queen.getX();
         double distanceY = particle.getY() - queen.getY();
         double totalDistance = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
         double touchRange = Queen.RADIUS + Particle.RADIUS;
+        return totalDistance < touchRange;
+    }
+
+    public void calculatePowerups(Swarm swarm, List<nutrient> nutrients)
+    {
+        Queen queen = swarm.getQueen();
+        List<nutrient> touchedNutrients = new ArrayList<nutrient>();
+        for(nutrient n : nutrients)
+        {
+            if(touchingNutrient(queen, n))
+            {
+                touchedNutrients.add(n);
+                swarm.addParticle(new Particle(queen.getX(), queen.getY()));
+            }
+        }
+        for(nutrient n : touchedNutrients)
+        {
+            nutrients.remove(n);
+        }
+    }
+
+    private boolean touchingNutrient(Queen queen, nutrient n)
+    {
+        double distanceX = n.getCor().getx() - queen.getX();
+        double distanceY = n.getCor().gety() - queen.getY();
+        double totalDistance = Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+        double touchRange = Queen.RADIUS + nutrient.RADIUS;
         return totalDistance < touchRange;
     }
 }

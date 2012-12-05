@@ -13,7 +13,7 @@ import commonlib.skills;
  */
 public class nutrient extends game_objects
 {
-    public final static int RADIUS = 4;
+    public final static int RADIUS = 3;
     skills sk1;
     nutrient()
     {
