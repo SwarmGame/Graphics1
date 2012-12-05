@@ -106,10 +106,10 @@ public class Game extends BasicGame
             Swarm swarm2 = gameSituationSerialized.getSwarm2();
             g.setColor(Color.blue);
             drawSwarm(swarm1, g);
-            g.drawString(swarm1.getQueen().getHitPoints() + "/20", 50, 470);
+            g.drawString(swarm1.getQueen().getHitPoints() + "/20", 50, Map.HEIGHT-30);
             g.setColor(Color.red);
             drawSwarm(swarm2, g);
-            g.drawString(swarm2.getQueen().getHitPoints() + "/20", 400, 470);
+            g.drawString(swarm2.getQueen().getHitPoints() + "/20", Map.WIDTH-100, Map.HEIGHT-30);
 
             g.setColor(Color.black);
             String winner = gameSituationSerialized.getWinner();
