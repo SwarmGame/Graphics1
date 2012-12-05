@@ -5,6 +5,9 @@ import commonlib.GameSituationSerialized;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
+import commonlib.gameObjects2.nutrient;
+
+import java.util.List;
 //import commonlib.GameObjects.Circle;
 
 /**
@@ -31,6 +34,9 @@ public class GameServerClientInitialization
        kryo.register(Particle.class);
        kryo.register(java.util.ArrayList.class);
        kryo.register(GameSituationSerialized.class);
+       kryo.register(nutrient.class);
+       kryo.register(java.util.List.class);
+       //kryo.register(List<nutrient>.class);
        return true;
     }
 }
