@@ -32,7 +32,7 @@ public class GameServer
     {
         this.game = game;
         players = new Hashtable<Connection, Player>();
-        server = new Server();
+        server = new Server(16384, 16384);
         GameServerClientInitialization.initialize(server.getKryo());
 
         server.start();

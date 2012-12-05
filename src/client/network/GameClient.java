@@ -30,7 +30,7 @@ public class GameClient
 
     public GameClient(Game game, String hostname, int port)
     {
-        client = new Client();
+        client = new Client(8192, 8192);
         Kryo kryo = client.getKryo();
         GameServerClientInitialization.initialize(client.getKryo());
 
