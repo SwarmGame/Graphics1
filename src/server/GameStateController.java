@@ -77,7 +77,10 @@ public class GameStateController
             if(touchingNutrient(queen, n))
             {
                 touchedNutrients.add(n);
-                swarm.addParticle(new Particle(queen.getX(), queen.getY()));
+                if(swarm.getParticles().size() < 15)
+                {
+                    swarm.addParticle(new Particle(queen.getX(), queen.getY()));
+                }
             }
         }
         for(nutrient n : touchedNutrients)
