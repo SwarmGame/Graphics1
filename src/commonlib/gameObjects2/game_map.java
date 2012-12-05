@@ -426,6 +426,17 @@ game_situation get_gamesituation(D2vector center, int M_range, int N_range)
     return;
 }
     */
+public ArrayList<D2vector> generate_corarray_for_newnutrient(int num)
+{
+    ArrayList<D2vector> coord_array = new ArrayList<D2vector>();
+    generate_new_nutrient(num);
+    for(int i=0;i<num;i++)
+    {
+       coord_array.add(remove_last_item_and_return_coord());
+    }
+    return coord_array;
+
+}
 public boolean generate_new_nutrient(int num)
 {
     final int max_num_try_per_nutrient = 1000;
@@ -465,6 +476,16 @@ public void remove_last_item()
     game_objects obj = game_objs.get(N-1);
     obj.remove_from_map(this);
     //game_objs.remove(N-1);
+}
+public D2vector remove_last_item_and_return_coord()
+{
+    D2vector result = new D2vector();
+    int N = game_objs.size();
+    System.out.format("total item number is %d, removing %dth ele!", N,N-1) ;
+    game_objects obj = game_objs.get(N-1);
+    result = obj.cor;
+    obj.remove_from_map(this);
+    return result;
 }
 void print_occupation_stat()
 {
