@@ -21,6 +21,14 @@ public abstract class game_objects
     //object_type objtype;
     double dt;
 
+    public D2vector getCor() {
+        return cor;
+    }
+
+    public void setCor(D2vector cor) {
+        this.cor = cor;
+    }
+
     void move()
     {
         cor.setx(cor.getx()+dt*vel.getx());

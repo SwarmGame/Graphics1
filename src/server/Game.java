@@ -1,11 +1,17 @@
 package server;
 
+import commonlib.D2vector;
 import commonlib.GameSituationSerialized;
+import commonlib.Random_2Dcoord_generator;
+import commonlib.gameObjects.Map;
 import commonlib.gameObjects2.game_map;
+import commonlib.gameObjects2.nutrient;
 import commonlib.network.GameServerResponseGameOver;
 import server.network.GameServer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -26,8 +32,11 @@ public class Game
     private String player2Name;
     private String player1Password;
     private String player2Password;
+    //private List<nutrient> nutrients;
 
     private game_map mygamemap;
+    //private Random_2Dcoord_generator rand_generator;
+
 
     public Game(String player1Name, String player1Password, String player2Name, String player2Password)
     {
@@ -73,13 +82,16 @@ public class Game
 
         // The game starts here, looping until a player wins
         int timeout = 0;
+        int nutrientCounter = 0;
         while (true)
         {
             GameSituationSerialized gameSituation = new GameSituationSerialized();
             try
             {
                 timeout++;
+                nutrientCounter++;
                 Thread.sleep(TIME_BETWEEN_UPDATES);
+
 
                 //mygamemap.generate_new_nutrient(1);
                 //mygamemap.remove_last_item();
@@ -92,6 +104,14 @@ public class Game
 
                 String winner = gameStateController.calculateDamage(player1, player2);
                 gameSituation.setWinner(winner);
+
+//                if(nutrientCounter % 10 == 0)
+//                {
+//                    generateNewNutrient();
+//                    nutrientCounter = 0;
+//                }
+
+                //gameSituation.setNutrients(nutrients);
 
                 gameServer.sendToAll(gameSituation);
 
@@ -117,6 +137,11 @@ public class Game
             }
         }
     }
+
+//    private void generateNewNutrient()
+//    {
+//        nutrients.add(new nutrient(rand_generator.get_random_2Dcoord(0, Map.WIDTH, 0, Map.HEIGHT).to_vector()));
+//    }
 
     public Player verifyPlayer(String name, String password)
     {

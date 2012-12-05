@@ -6,6 +6,7 @@ import commonlib.gameObjects.Map;
 import commonlib.gameObjects.Particle;
 import commonlib.gameObjects.Queen;
 import commonlib.gameObjects.Swarm;
+import commonlib.gameObjects2.nutrient;
 import commonlib.network.GameServerRequest;
 import commonlib.network.GameServerRequestAuth;
 import org.newdawn.slick.*;
@@ -82,7 +83,7 @@ public class Game extends BasicGame
     }
 
 
-    void drawSwarm(Swarm swarm, Graphics g)
+    private void drawSwarm(Swarm swarm, Graphics g)
     {
         for(Particle particle : swarm.getParticles())
         {
@@ -95,6 +96,16 @@ public class Game extends BasicGame
         //g.texture(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), Queen.RADIUS), queenImages.get(0));
         g.fill(new Circle(swarm.getQueen().getX(), swarm.getQueen().getY(), Queen.RADIUS));
     }
+
+    private void drawNutrients(List<nutrient> nutrients, Graphics g)
+    {
+        for(nutrient n : nutrients)
+        {
+            Circle circle = new Circle((int)n.getCor().getx(), (int)n.getCor().gety(), nutrient.RADIUS);
+            g.fill(circle);
+        }
+    }
+
     // This method is called every time the game window is redrawn
     public void render(GameContainer gc, Graphics g) throws SlickException
     {
@@ -104,12 +115,16 @@ public class Game extends BasicGame
         {
             Swarm swarm1 = gameSituationSerialized.getSwarm1();
             Swarm swarm2 = gameSituationSerialized.getSwarm2();
+            List<nutrient> nutrients = gameSituationSerialized.getNutrients();
             g.setColor(Color.blue);
             drawSwarm(swarm1, g);
             g.drawString(swarm1.getQueen().getHitPoints() + "/20", 50, Map.HEIGHT-30);
             g.setColor(Color.red);
             drawSwarm(swarm2, g);
             g.drawString(swarm2.getQueen().getHitPoints() + "/20", Map.WIDTH-100, Map.HEIGHT-30);
+
+            g.setColor(Color.green);
+            drawNutrients(nutrients, g);
 
             g.setColor(Color.black);
             String winner = gameSituationSerialized.getWinner();
