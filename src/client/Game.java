@@ -110,14 +110,16 @@ public class Game extends BasicGame
             g.setColor(Color.red);
             drawSwarm(swarm2, g);
             g.drawString(swarm2.getQueen().getHitPoints() + "/20", 400, 470);
+
+            g.setColor(Color.black);
+            String winner = gameSituationSerialized.getWinner();
+            if(winner != null)
+            {
+                g.drawString(winner, 165, 235);
+            }
         }
 
-        g.setColor(Color.black);
-        String winner = gameSituationSerialized.getWinner();
-        if(winner != null)
-        {
-            g.drawString(winner, 165, 235);
-        }
+
     }
 
     // This method handles events such as mouse movement and key presses
