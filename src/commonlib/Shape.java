@@ -1,5 +1,7 @@
 package commonlib;
 
+import commonlib.gameObjects2.game_map;
+
 import java.util.ArrayList;
 
 public class Shape {
@@ -8,6 +10,15 @@ public class Shape {
     D2vector center;
     D2vector direction;
     double dh;
+
+    public ArrayList<D2vector> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<D2vector> nodes) {
+        this.nodes = nodes;
+    }
+
     ArrayList<D2vector> nodes;
     private class Shape_para
     {
@@ -17,7 +28,7 @@ public class Shape {
         double  m,n;  //for rectangle
         double  x_range, y_range; // for complex shape
     }
-    Shape()
+    public Shape()
     {
         center = new D2vector(0,0);
         direction = new D2vector(1,0);
@@ -29,7 +40,7 @@ public class Shape {
         direction = new D2vector(1,0);
         nodes = new ArrayList<D2vector>();
     }
-    Shape(D2vector loc, double r)   // currently, we only support creating circular shapes 
+    public Shape(D2vector loc, double r)   // currently, we only support creating circular shapes
     {
     	int ILIMIT = (int)Math.ceil(r);
     	D2vector tmp ;
@@ -58,7 +69,7 @@ public class Shape {
     		}
     	}
     }
-    boolean is_fit_newloc(D2vector new_center, game_map map)
+    public boolean is_fit_newloc(D2vector new_center, game_map map)
     {
     	ArrayList<D2vector> tmp_nodes = new ArrayList<D2vector>();
     	int i;

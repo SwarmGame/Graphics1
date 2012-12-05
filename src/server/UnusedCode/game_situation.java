@@ -1,7 +1,8 @@
-package commonlib;
+package server.UnusedCode;
 
-import commonlib.gameObjects2.game_map;
-import commonlib.gameObjects2.game_objects;
+import server.UnusedCode.D2vector;
+import server.UnusedCode.game_map;
+import server.UnusedCode.game_objects;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import java.util.*;
 public class game_situation {
     ArrayList<game_objects>   objs_local;
     D2vector user_center;
-    public game_situation(game_map map, D2vector center, int M_range, int N_range)
+    game_situation(game_map map, D2vector center, int M_range, int N_range)
     {
         int M_low, M_high;
         int N_low, N_high;
@@ -29,17 +30,17 @@ public class game_situation {
         {
             M_low =0;
         }
-        if(M_high>map.getM())
+        if(M_high>map.M)
         {
-            M_high = map.getM();
+            M_high = map.M;
         }
         if(N_low<0)
         {
             N_low =0;
         }
-        if(N_high>map.getN())
+        if(N_high>map.N)
         {
-            N_high =map.getN();
+            N_high =map.N;
         }
         objs_local = new ArrayList<game_objects>();
         user_center = new D2vector(center);
@@ -48,7 +49,7 @@ public class game_situation {
         {
             for(int j=N_low;j<N_high;j++)
             {
-                objset.add((map.getMap_grid()[i][j]).getGobj());
+                objset.add((map.map_grid[i][j]).gobj);
             }
         }
         Iterator<game_objects> it = objset.iterator();
@@ -61,7 +62,7 @@ public class game_situation {
         objs_local = new ArrayList<game_objects>();
         user_center = new D2vector();
     }
-    public void Print_size()
+    void Print_size()
     {
         System.out.format("number of objs in the game situation: %d%n",objs_local.size());
         for(int i=0;i<objs_local.size();i++)

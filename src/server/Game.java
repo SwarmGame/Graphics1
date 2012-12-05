@@ -1,9 +1,8 @@
 package server;
 
 import commonlib.GameSituationSerialized;
-import commonlib.gameObjects.Swarm;
+import commonlib.gameObjects2.game_map;
 import commonlib.network.GameServerResponseGameOver;
-import commonlib.*;
 import server.network.GameServer;
 
 import java.io.IOException;
@@ -59,12 +58,12 @@ public class Game
         mygamemap.initialize_map(0);
         //mygamemap.generate_new_nutrient(30);
         int i =0;
-        while(i<10000)
-        {
-           mygamemap.generate_new_nutrient(1);
-           mygamemap.remove_last_item();
-           i++;
-        }
+//        while(i<10000)
+//        {
+//           mygamemap.generate_new_nutrient(1);
+//           mygamemap.remove_last_item();
+//           i++;
+//        }
 
         movementController = new MovementController();
         networkController = new NetworkController(this);

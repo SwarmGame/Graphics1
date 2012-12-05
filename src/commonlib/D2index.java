@@ -10,12 +10,29 @@ package commonlib;
 public class D2index {
     int m_cor;
     int n_cor;
-    D2index(int m, int n)
+
+    public int getM_cor() {
+        return m_cor;
+    }
+
+    public void setM_cor(int m_cor) {
+        this.m_cor = m_cor;
+    }
+
+    public int getN_cor() {
+        return n_cor;
+    }
+
+    public void setN_cor(int n_cor) {
+        this.n_cor = n_cor;
+    }
+
+    public D2index(int m, int n)
     {
         this.m_cor = m;
         this.n_cor = n;
     }
-    D2vector to_vector()
+    public D2vector to_vector()
     {
         double x_cor = (double)n_cor;
         double y_cor = (double)m_cor;

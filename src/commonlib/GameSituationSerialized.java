@@ -1,6 +1,9 @@
 package commonlib;
 
 import commonlib.gameObjects.Swarm;
+import commonlib.gameObjects2.nutrient;
+
+import java.util.List;
 
 /**
  * Game Situation Serialized
@@ -14,11 +17,22 @@ public class GameSituationSerialized
     private Swarm swarm1;
     private Swarm swarm2;
     private String winner;
+    //private List<nutrient> nutrients;
 
     public Swarm getSwarm1()
     {
         return swarm1;
     }
+
+//    public List<nutrient> getNutrients()
+//    {
+//        return nutrients;
+//    }
+//
+//    public void setNutrients(List<nutrient> nutrients)
+//    {
+//        this.nutrients = nutrients;
+//    }
 
     public void setSwarm1(Swarm swarm1)
     {

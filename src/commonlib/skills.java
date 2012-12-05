@@ -1,5 +1,7 @@
 package commonlib;
 
+import commonlib.gameObjects2.Queen;
+
 public abstract class   skills {  // skills could be obtained from nutriants
        boolean is_instant;
 

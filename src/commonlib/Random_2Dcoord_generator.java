@@ -13,7 +13,7 @@ public final class Random_2Dcoord_generator {
     // x from x_min to x_max, y from y_min to y_max, boundary value included
     // because of 3-sigma rule, the random number we obtain from java gaussian will be range from -3 to 3, with 99.7% confidence.
     Random fRandom;
-    Random_2Dcoord_generator()
+    public Random_2Dcoord_generator()
     {
         fRandom = new Random();
     }

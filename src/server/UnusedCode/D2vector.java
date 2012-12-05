@@ -1,4 +1,4 @@
-package commonlib;
+package server.UnusedCode;
 
 import java.util.Random;
 
@@ -80,12 +80,12 @@ public class D2vector {
     	  double square = (v1.getx() - v2.getx())*(v1.getx() - v2.getx())+(v1.gety() - v2.gety())*(v1.gety() - v2.gety());
     	  return Math.sqrt(square);
       }
-      public D2vector multi(double k)
+      D2vector multi(double k)
       {
     	  D2vector result = new D2vector(this.x*k,this.y*k);
     	  return result;
       }
-      public D2vector plus(D2vector v2)
+      D2vector plus(D2vector v2)
       {
     	  D2vector result = new D2vector(this.x+v2.getx(),this.y+v2.gety());
     	  return result;
@@ -94,36 +94,6 @@ public class D2vector {
       {
     	  D2vector result = new D2vector(this.x-v2.getx(),this.y-v2.gety());
     	  return result;
-      }
-      public D2index  to_index()
-      {
-          int m = (int)y;
-          int n = (int)x;
-          D2index result= new D2index(m,n);
-          return result;
-      }
-      double Modul()
-      {
-          return Math.sqrt(x*x+y*y);
-      }
-      D2vector unitified()
-      {
-          double modul = Modul();
-          double newx,newy;
-          D2vector result;
-          if(modul!=0)
-          {
-              newx = x/modul;
-              newy = y/modul;
-              result = new D2vector(newx, newy);
-          }
-          else
-          {
-              newx = 0.0;
-              newy = 0.0;
-              result = new D2vector(newx, newy);
-          }
-          return result;
       }
       public void Print()
   	  {

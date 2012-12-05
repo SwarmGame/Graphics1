@@ -1,4 +1,9 @@
-package commonlib;
+package commonlib.gameObjects2;
+
+import commonlib.D2index;
+import commonlib.D2vector;
+import commonlib.Random_2Dcoord_generator;
+import commonlib.game_situation;
 
 import java.util.ArrayList;
 //import java.util.ArrayList;
@@ -11,12 +16,37 @@ public class game_map {
 //boolean has_bornloc_flag;
 //typeofobject[][]  gamemap;
 
-gridpt[][]              map_grid;
+    public gridpt[][] getMap_grid() {
+        return map_grid;
+    }
+
+    public void setMap_grid(gridpt[][] map_grid) {
+        this.map_grid = map_grid;
+    }
+
+    gridpt[][]              map_grid;
 ArrayList<D2vector>     spawn_locs;
 ArrayList<game_objects> game_objs;
 //D2distr                 prob_distr;
 Random_2Dcoord_generator rand_generator;
-int M, N;
+
+    public int getM() {
+        return M;
+    }
+
+    public void setM(int m) {
+        M = m;
+    }
+
+    public int getN() {
+        return N;
+    }
+
+    public void setN(int n) {
+        N = n;
+    }
+
+    int M, N;
 int i,j;
 int center_m;
 int center_n;
@@ -25,6 +55,14 @@ double dt;
 empty emptyobj;
 public class gridpt
 {
+    public game_objects getGobj() {
+        return gobj;
+    }
+
+    public void setGobj(game_objects gobj) {
+        this.gobj = gobj;
+    }
+
     game_objects gobj;
     D2vector     center;
     gridpt()
@@ -47,9 +85,9 @@ public class gridpt
 }
 gridpt get_gridpt(D2index coord)
 {
-    return  map_grid[coord.m_cor][coord.n_cor];
+    return  map_grid[coord.getM_cor()][coord.getN_cor()];
 }
-boolean is_occupied(D2index coord)
+public boolean is_occupied(D2index coord)
 {
     if(is_inside_map(coord))
     {
@@ -60,9 +98,9 @@ boolean is_occupied(D2index coord)
     }
     return false;
 }
-boolean is_inside_map(D2index coord)
+public boolean is_inside_map(D2index coord)
 {
-   if(coord.m_cor>=0&&coord.m_cor<M&&coord.n_cor>=0&&coord.n_cor<N)
+   if(coord.getM_cor()>=0&&coord.getM_cor()<M&&coord.getN_cor()>=0&&coord.getN_cor()<N)
    {
        return true;
    }
@@ -325,7 +363,7 @@ void apply_all_objs_tomap()
         game_objs.get(i).apply_to_map(this);
     }
 }
-boolean remove_obj(game_objects obj)
+public boolean remove_obj(game_objects obj)
 {
     int N = game_objs.size();
     int i;
