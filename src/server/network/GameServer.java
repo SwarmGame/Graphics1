@@ -28,7 +28,7 @@ public class GameServer
     // Currently connected players only
     Hashtable<Connection, Player> players;
 
-    public GameServer(Game game) throws IOException
+    public GameServer(Game game, int port) throws IOException
     {
         this.game = game;
         players = new Hashtable<Connection, Player>();
@@ -38,7 +38,8 @@ public class GameServer
         server.start();
         try
         {
-            server.bind(8000, 8000);
+            System.out.println(port);
+            server.bind(port, port);
         }
         catch (IOException io)
         {
@@ -53,7 +54,7 @@ public class GameServer
     {
        // Client has connected, but hasn't been authenticated yet
        if (Main.DEBUG > 1)
-           System.out.printf("New client connected. Awaiting GameServerRequestAuth object");
+           System.out.printf("New client connected. Awaiting GameServerRequestAuth object\n");
     }
 
     public void disconnected(Connection connection)
@@ -62,7 +63,7 @@ public class GameServer
         if (Main.DEBUG > 1)
         {
             Player player =  players.get(connection);
-            System.out.printf("client disconnected: %s", player.getName());
+            System.out.printf("client disconnected: %s\n", player.getName());
         }
         if (players != null)
         {
@@ -90,14 +91,14 @@ public class GameServer
                 players.put(connection, player);
                 if (Main.DEBUG > 0)
                 {
-                    System.out.printf("Client authenticated: %s", player.getName());
+                    System.out.printf("Client authenticated: %s\n", player.getName());
                 }
             }
             else
             {
                 if (Main.DEBUG > 0)
                 {
-                    System.out.printf("Client authentication failed %s:%s", request.getName(), request.getPassword());
+                    System.out.printf("Client authentication failed %s:%s\n", request.getName(), request.getPassword());
                 }
             }
             return;
@@ -110,11 +111,12 @@ public class GameServer
         {
             if (Main.DEBUG > 0)
                 System.out.println("ERROR: GameServer::received - player isn't found in players hash table");
+            return;
         }
 
         if (Main.DEBUG > 1)
         {
-            System.out.printf("Object received: %s", object.getClass());
+            System.out.printf("Object received: %s\n", object.getClass());
         }
 
         if (object.getClass() == GameServerRequestMove.class)

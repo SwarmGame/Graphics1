@@ -54,12 +54,12 @@ public class Game
         return networkController;
     }
 
-    void start()
+    void start(int port)
     {
         System.out.println("Starting game server");
         try
         {
-            gameServer = new GameServer(this);
+            gameServer = new GameServer(this, port);
         }
         catch (IOException e)
         {

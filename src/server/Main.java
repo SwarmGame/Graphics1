@@ -18,7 +18,7 @@ public class Main
         if(args.length == 4)
         {
             game = new Game(args[0], args[1], args[2], args[3]);
-            game.start();
+            game.start(8000);
         }
         else
         {
